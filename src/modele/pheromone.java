@@ -6,9 +6,8 @@ public class pheromone {
 	private int phero_base;
 	
 	//methode
-	public pheromone(int qte_phero, int phero_base) {
-		super();
-		this.qte_phero = qte_phero;
+	public pheromone(int phero_base) {
+		this.qte_phero = phero_base;
 		this.phero_base = phero_base;
 	}
 	@Override
