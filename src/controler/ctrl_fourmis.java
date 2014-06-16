@@ -11,8 +11,8 @@ public class ctrl_fourmis {
 	List<fourmi> listFourmi = new ArrayList<fourmi>();
 	
 	//ajout d'une fourmi a la liste
-	public void ajoutFourmi(int charge_max, int charge_porter){
-		fourmi maFourmi =  new fourmi(charge_max, charge_porter);
+	public void ajoutFourmi(int charge_max){
+		fourmi maFourmi =  new fourmi(charge_max);
 		listFourmi.add(maFourmi);
 	}
 	
@@ -54,6 +54,18 @@ public class ctrl_fourmis {
 	            }  
 	         }
 		}
+	}
+	
+	//fonction qui parcour tout la liste des fourmis et test si elle sont bien a la bonne place cad la fourmiliere qui lui est associé
+	//si oui on balance l'objet au fonction individuel
+	public void dechargementAll(){
+		
+	}
+	
+	//fonction qui parcour tout la liste des fourmis et test si elle sont bien a la bonne place un bloc de nourriture
+	//si oui on balance l'objet au fonction individuel
+	public void chargementAll(){
+		
 	}
 	
 	//tour par tour on decharge la fourmit jusqu'a 0 et on met plein a 0

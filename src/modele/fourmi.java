@@ -7,9 +7,9 @@ public class fourmi {
 	private int plein;
 	
 	//methode
-	public fourmi(int charge_max, int charge_porter) {
+	public fourmi(int charge_max) {
 		this.charge_max = charge_max;
-		this.charge_porter = charge_porter;
+		this.charge_porter = 0;
 		this.plein = 0;
 	}
 	
