@@ -46,12 +46,20 @@ public class ctrl_pheromones {
 	
 	//on baisse la qte de phéro de tout les objet et on appel destroyPheros() pour le menage
 	public void decrementePhero(){
+		for(int i=0;i<listPhero.size();i++){          
+			listPhero.get(i).decrementePheromone();	
+         }
 		
+		destroyPheros();
 	}
 	
 	//parcours tout les phero et regarde la quantité si egal 0 on delete
 	public void destroyPheros(){
-		
+		for(int i=0;i<listPhero.size();i++){  
+            if(listPhero.get(i).getQte_phero() == 0){  	               
+            	listPhero.remove(i);
+            }  
+         }
 	}
 	
 }
