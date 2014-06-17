@@ -26,8 +26,13 @@ public class fourmiliere {
 	
 	public void nextStep() {
 		// Parcours toutes les fourmis de la fourmiliere et les fait avancer
+		
+		
+		
 	}
 
+	
+	
 	@Override
 	public String toString() {
 		return "fourmiliere [qte_food_recolter=" + qte_food_recolter + ", qte_fourmi=" + qte_fourmi + 
@@ -42,13 +47,15 @@ public class fourmiliere {
 		this.setQte_food_recolter(this.getQte_food_recolter() - qte);
 	}
 	
-	public void ajoutFourmi(){
-		theCtrlFourmis.ajoutFourmi(10, this);
+	public void ajoutFourmi(int charge_max, int X, int Y, fourmiliere fourmiliere, food theFood){
+		theCtrlFourmis.ajoutFourmi(charge_max,X, Y, this, theFood);
 	}
 	
+	//non c'est pas ici ca c'est dans une vue ou la vue gŽnŽral
+	/*
 	public void createView() {
 		// Crée et dessine la fourmilière
-	}
+	}*/
 	
 	public void suppressionFourmi(fourmi theFourmi){
 		theCtrlFourmis.deleteFourmi(theFourmi);

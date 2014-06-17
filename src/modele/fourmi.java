@@ -2,65 +2,36 @@ package modele;
 
 public class fourmi {
 	//attribut
-	public fourmiliere fourmiliere;
-	public int x;
-	public int y;
-	public boolean isRetourFourmiliere = false;
-	public boolean suitPheromone = false;
-	public boolean isSurNourriture = false;
-	public boolean deposePheromone = false;
+	// somme nous sur je ne suis pas persuader pour l'objet fourmiliere quoi que 
+	private fourmiliere maFourmiliere;
+	private food monFood;
+	private int x;
+	private int y;
+	//on a plein pour cela
+	//public boolean isRetourFourmiliere = false;
+	private boolean suitPheromone = false;
+	private boolean isSurNourriture = false;
+	//pas besoin de cela les phŽromones seront mit en place lorsque la fourmit se dŽplace et qu'elle est pleinne via un controleur plus haut
+	//public boolean deposePheromone = false;
 	
 	private int charge_max;
 	private int charge_porter;
 	private int plein;
 	
 	//methode
-	public fourmi(int charge_max, fourmiliere fourmiliere) {
+	public fourmi(int charge_max, int X, int Y, fourmiliere theFourmiliere, food theFood) {
 		this.charge_max = charge_max;
 		this.charge_porter = 0;
 		this.plein = 0;
-		this.fourmiliere = fourmiliere;
+		this.x = X;
+		this.y = Y;
+		this.maFourmiliere = theFourmiliere;
+		this.monFood = theFood;
 	}
 	
-	// Fait avancer la fourmie d'un pas
-	public void avance() {
-		// Si la fourmi a l'état retour à la fourmilière
-			// Avancer vers la fourmilière en ligne droite
-		// Sinon si la fourmi se trouve sur de la nourriture, c'est à dire que les x et y correspondent à l'emplacement d'une nourriture du monde
-			// La fourmi récupère de la nourriture
-		// Sinon si la fourmi repère de la nourriture, c'est à dire que de la nourriture se situe dans l'entourage proche de la fourmi
-			// Se déplacer vers la nourriture
-		// Sinon si la fourmi suit des phéromones
-			// Chercher une autre phéromone
-			// Se déplacer à l'emplacement de la phéromone trouvée
-		// Sinon
-			// Chercher une phéromone à proximité
-			// Si une phéromone est à proximité
-				// Se déplacer vers celle-ci
-			// Sinon
-				// Se déplacer d'un pas dans une direction aléatoire
-		
-		// Si la direction définie est un obstacle, lancer le contournement de l'obstacle
-		// Sinon, se déplacer sur la case
-	}
-	
-	// Vérifie si des phéromones sont proches de la position de la fourmi
-	public void pheromoneAProximite(){
-	
-	}
-	
-	// Cherche le prochain phéromone à suivre
-	public void searchNextPheromone(){
-		
-	}
-	
-	// Vérifie si de la nourriture est proche de la position de la fourmi
-	public void hasNourritureProximite(){
-	
-	}
-	
+	//fonction existe deja et on met a jour l'objet nourriture plus haut dans un controleur
 	// Récupère la nourriture
-	public void getNourriture(){
+	/*public void getNourriture(){
 		// Récupère une quantité de nourriture
 		this.charge_porter++;
 		
@@ -72,10 +43,11 @@ public class fourmi {
 		
 		// Et dépose des phéromones en chemin
 		this.deposePheromone = true;
-	}
+	}*/
 	
+	//pareil existe deja et c'est pas le bon endrois 
 	// Dépose la nourriture à la fourmilière
-	public void deposeNourriture(){
+	/*public void deposeNourriture(){
 		// Met à jour la quantité dans l'objet fourmilière
 		this.fourmiliere.qte_food_recolter += this.charge_porter;
 		
@@ -87,21 +59,14 @@ public class fourmi {
 		
 		// Et ne dépose plus de phéromones en chemin
 		this.deposePheromone = false;
-	}
+	}*/
 	
-	// Vérifie si un obstacle est proche de la position de la fourmi
-	public void hasObstacleProximite(){
 	
-	}
-	
-	// Contourne un obstacle selon la stratégie d'évitement définie par l'utilisateur
-	public void contourneObstacle(){
-	
-	}
 	
 	@Override
 	public String toString() {
-		return "fourmi [charge_max=" + charge_max + ", charge_porter=" + charge_porter + ", plein=" + plein + "]";
+		return "fourmi [charge_max=" + charge_max + ", charge_porter=" + charge_porter + ", plein=" + plein + ", x=" + x + ", y=" + y + "" +
+				", maFourmiliere=" + maFourmiliere + ", monFood=" + monFood + "]";
 	}
 	
 	public void incrementCharge(){
@@ -111,6 +76,14 @@ public class fourmi {
 	public void decrementCharge(){
 		this.setCharge_porter(this.getCharge_porter()-1);
 	}
+	
+	//on fait avancer la fourmit d'un pas oui mais tout les controle doivent se faire dans le controler
+	// Fait avancer la fourmie d'un pas
+	public void avance(int X, int Y) {
+		this.setX(X);
+		this.setY(Y);
+	}
+	
 	
 	//accesseur
 	public int getCharge_max() {
@@ -132,5 +105,28 @@ public class fourmi {
 	public void setPlein(int plein) {
 		this.plein = plein;
 	}
-	
+	public int getX() {
+		return x;
+	}
+	public void setX(int X) {
+		this.x = X;
+	}
+	public int getY() {
+		return y;
+	}
+	public void setY(int Y) {
+		this.y = Y;
+	}
+	public fourmiliere getMaFourmiliere() {
+		return maFourmiliere;
+	}
+	public void setMaFourmiliere(fourmiliere theFourmiliere) {
+		this.maFourmiliere = theFourmiliere;
+	}
+	public food getMonFood() {
+		return monFood;
+	}
+	public void setMonFood(food theFood) {
+		this.monFood = theFood;
+	}
 }

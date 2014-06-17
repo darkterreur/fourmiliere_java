@@ -3,6 +3,7 @@ package controler;
 import java.util.ArrayList;
 import java.util.List;
 
+import modele.food;
 import modele.fourmi;
 import modele.fourmiliere;
 import modele.pheromone;
@@ -12,8 +13,8 @@ public class ctrl_fourmis {
 	List<fourmi> listFourmi = new ArrayList<fourmi>();
 	
 	//ajout d'une fourmi a la liste
-	public void ajoutFourmi(int charge_max, fourmiliere fourmiliere){
-		fourmi maFourmi =  new fourmi(charge_max, fourmiliere);
+	public void ajoutFourmi(int charge_max, int X, int Y, fourmiliere fourmiliere, food theFood){
+		fourmi maFourmi =  new fourmi(charge_max ,X, Y, fourmiliere, theFood);
 		listFourmi.add(maFourmi);
 	}
 	
@@ -26,62 +27,132 @@ public class ctrl_fourmis {
 		}
 	}
 	
+	public boolean exist(int X, int Y){
+		boolean trouve = false;
+		for(int i=0;i<listFourmi.size();i++){
+			if(listFourmi.get(i).getX() == X && listFourmi.get(i).getY() == Y){
+				trouve = true;
+			}
+		}
+		return trouve;
+	}
+	
+	public int getIndice(fourmi myFourmi){
+		int indice = 0;
+		for(int i=0;i<listFourmi.size();i++){
+			if(listFourmi.get(i).equals(myFourmi)){
+				indice = i;
+			}
+		}
+		return indice;
+	}
+	
+	public int getIndice(int X, int Y){
+		int indice = 0;
+		for(int i=0;i<listFourmi.size();i++){
+			if(listFourmi.get(i).getX() == X && listFourmi.get(i).getY() == Y){
+				indice = i;
+			}
+		}
+		return indice;
+	}
+	
 	//enleve un fourmi de la liste
 	public void deleteFourmi(fourmi myFourmi){
 		if(this.exist(myFourmi)){
-			
-			for(int i=0;i<listFourmi.size();i++){  
-	            if(listFourmi.get(i).equals(myFourmi)){  	               
-	            	listFourmi.remove(i);
-	            }  
-	         }
-			
-			//je suppose que l'on peut remplacer le code ci dessus par ceci mais je n'en suis pas sur
 			listFourmi.remove(myFourmi);
-			
 		}
 	}
 	
 	//tour par tour on charge la fourmit jusqu'au seuil et on met plein a 1
 	public void chargementFourmi(fourmi myFourmi){
-		if(this.exist(myFourmi)){
-			for(int i=0;i<listFourmi.size();i++){  
-	            if(listFourmi.get(i).equals(myFourmi)){  	               
-	            	if(listFourmi.get(i).getCharge_porter() < listFourmi.get(i).getCharge_max()){
-	            		listFourmi.get(i).incrementCharge();
-	            	}else{
-	            		listFourmi.get(i).setPlein(1);
-	            	}
-	            }  
-	         }
-		}
+		int i = getIndice(myFourmi);
+		
+		if(listFourmi.get(i).getCharge_porter() < listFourmi.get(i).getCharge_max()){
+    		listFourmi.get(i).incrementCharge();
+    	}else{
+    		listFourmi.get(i).setPlein(1);
+    	}
+	}
+	
+	//tour par tour on decharge la fourmit jusqu'a 0 et on met plein a 0
+	public void dechargementFourmi(fourmi myFourmi){
+		int i = getIndice(myFourmi);
+		
+		if(listFourmi.get(i).getCharge_porter() > 0){
+    		listFourmi.get(i).decrementCharge();
+    	}else{
+    		listFourmi.get(i).setPlein(0);
+    	}
 	}
 	
 	//fonction qui parcour tout la liste des fourmis et test si elle sont bien a la bonne place cad la fourmiliere qui lui est associŽ
 	//si oui on balance l'objet au fonction individuel
 	public void dechargementAll(){
-		
+		for(int i=0;i<listFourmi.size();i++){
+			//on test si la fourmit est sur la foumiliere et quelle n'est pas encore vide
+				//on appel la fonction dechargementFourmi(obj)
+				//on appel la fonction qui incrŽmente la fourmiliere
+		}
 	}
 	
 	//fonction qui parcour tout la liste des fourmis et test si elle sont bien a la bonne place un bloc de nourriture
 	//si oui on balance l'objet au fonction individuel
 	public void chargementAll(){
-		
+		for(int i=0;i<listFourmi.size();i++){
+			//on test si la fourmit est sur la nourriturre et quelle n'est pas encore vide
+				//on appel la fonction chargementFourmi(obj)
+				//on appel la fonction qui dŽcrŽmente la food
+		}
 	}
 	
-	//tour par tour on decharge la fourmit jusqu'a 0 et on met plein a 0
-	public void dechargementFourmi(fourmi myFourmi){
-		if(this.exist(myFourmi)){
-			for(int i=0;i<listFourmi.size();i++){  
-	            if(listFourmi.get(i).equals(myFourmi)){
-	            	if(listFourmi.get(i).getCharge_porter() > 0){
-	            		listFourmi.get(i).decrementCharge();
-	            	}else{
-	            		listFourmi.get(i).setPlein(0);
-	            	}
-	            }  
-	         }
-		}
+	
+	
+	// Contourne un obstacle selon la stratégie d'évitement définie par l'utilisateur
+	public void contourneObstacle(){
+	
+	}
+	
+	// Vérifie si un obstacle est proche de la position de la fourmi
+	public void hasObstacleProximite(){
+	
+	}
+	
+	// Vérifie si des phéromones sont proches de la position de la fourmi
+	public void pheromoneAProximite(){
+	
+	}
+	
+	// Cherche le prochain phéromone à suivre
+	public void searchNextPheromone(){
+		//vraiment utile ? si elle se dŽplace et qu'il y a un phŽromone a cotŽ pas beson de chercher le suivant non?
+	}
+	
+	// Vérifie si de la nourriture est proche de la position de la fourmi
+	public void hasNourritureProximite(){
+	
+	}
+	
+	public void deplacement(){
+	//pour chaque fourmi
+	// Si la fourmi a l'état retour à la fourmilière
+				// Avancer vers la fourmilière en ligne droite
+			// Sinon si la fourmi se trouve sur de la nourriture, c'est à dire que les x et y correspondent à l'emplacement d'une nourriture du monde
+				// La fourmi récupère de la nourriture
+			// Sinon si la fourmi repère de la nourriture, c'est à dire que de la nourriture se situe dans l'entourage proche de la fourmi
+				// Se déplacer vers la nourriture
+			// Sinon si la fourmi suit des phéromones
+				// Chercher une autre phéromone
+				// Se déplacer à l'emplacement de la phéromone trouvée
+			// Sinon
+				// Chercher une phéromone à proximité
+				// Si une phéromone est à proximité
+					// Se déplacer vers celle-ci
+				// Sinon
+					// Se déplacer d'un pas dans une direction aléatoire
+			
+			// Si la direction définie est un obstacle, lancer le contournement de l'obstacle
+			// Sinon, se déplacer sur la case
 	}
 	
 }

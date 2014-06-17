@@ -9,8 +9,8 @@ public class ctrl_pheromones {
 	List<pheromone> listPhero = new ArrayList<pheromone>();
 	
 	//ajoute un nouveau pheromone a la liste
-	public void ajoutPhero(int qte_base_phero){
-		pheromone monPhero = new pheromone(qte_base_phero);
+	public void ajoutPhero(int qte_base_phero, int X, int Y){
+		pheromone monPhero = new pheromone(qte_base_phero, X, Y);
 		listPhero.add(monPhero);
 	}
 	
@@ -23,19 +23,46 @@ public class ctrl_pheromones {
 		}
 	}
 	
+	public boolean exist(int X, int Y){
+		boolean trouve = false;
+		
+		for(int i=0;i<listPhero.size();i++){
+			if(listPhero.get(i).getX() == X && listPhero.get(i).getY() == Y){
+				trouve = true;
+			}
+		}
+		
+		return trouve;
+	}
+	
+	public int getIndice(pheromone myPhero){
+		int indice = 0;
+		
+		for(int i=0;i<listPhero.size();i++){
+			if(listPhero.get(i).equals(myPhero)){
+				indice = i;
+			}
+		}
+		
+		return indice;
+	}
+	
+	public int getIndice(int X, int Y){
+		int indice = 0;
+		
+		for(int i=0;i<listPhero.size();i++){
+			if(listPhero.get(i).getX() == X && listPhero.get(i).getY() == Y){
+				indice = i;
+			}
+		}
+		
+		return indice;
+	}
+	
 	//enleve un pheromone de la liste
 	public void deletePhero(pheromone myPhero){
 		if(this.exist(myPhero)){
-			
-			for(int i=0;i<listPhero.size();i++){  
-	            if(listPhero.get(i).equals(myPhero)){  	               
-	            	listPhero.remove(i);
-	            }  
-	         }
-			
-			//je suppose que l'on peut remplacer le code ci dessus par ceci mais je n'en suis pas sur
 			listPhero.remove(myPhero);
-			
 		}
 	}
 	
