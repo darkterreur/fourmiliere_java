@@ -5,18 +5,27 @@ import controler.ctrl_fourmis;
 public class fourmiliere {
 	
 	//attribut
-	private int qte_food_recolter;
-	private int qte_fourmi;
-	private int max_fourmi;
-	private int qte_food_creat_fourmi;
+	public int x;
+	public int y;
+	public monde monde;
+	
+	public int qte_food_recolter;
+	public int qte_fourmi;
+	public int max_fourmi;
+	public int qte_food_creat_fourmi;
 	ctrl_fourmis theCtrlFourmis = new ctrl_fourmis();
 	
 	//methode
-	public fourmiliere(int qte_food_recolter, int qte_fourmi, int max_fourmi) {
+	public fourmiliere(int qte_food_recolter, int qte_fourmi, int max_fourmi, monde monde) {
 		this.qte_food_recolter = qte_food_recolter;
 		this.qte_fourmi = qte_fourmi;
 		this.max_fourmi = max_fourmi;
 		this.qte_food_creat_fourmi = 500;
+		this.monde = monde;
+	}
+	
+	public void nextStep() {
+		// Parcours toutes les fourmis de la fourmiliere et les fait avancer
 	}
 
 	@Override
@@ -25,8 +34,8 @@ public class fourmiliere {
 				", max_fourmi=" + max_fourmi + ", qte_food_creat_fourmi=" + qte_food_creat_fourmi +"]";
 	}
 
-	public void ajoutFoodStock(){
-		this.setQte_food_recolter(this.getQte_food_recolter()+1);
+	public void ajoutFoodStock(int quantite){
+		this.setQte_food_recolter(this.getQte_food_recolter()+quantite);
 	}
 	
 	public void retirerFoodStock(int qte){
@@ -35,6 +44,10 @@ public class fourmiliere {
 	
 	public void ajoutFourmi(){
 		theCtrlFourmis.ajoutFourmi(10);
+	}
+	
+	public void createView() {
+		// Crée et dessine la fourmilière
 	}
 	
 	public void suppressionFourmi(fourmi theFourmi){
