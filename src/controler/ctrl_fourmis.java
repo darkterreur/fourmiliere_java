@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import modele.fourmi;
+import modele.fourmiliere;
 import modele.pheromone;
 
 public class ctrl_fourmis {
@@ -11,8 +12,8 @@ public class ctrl_fourmis {
 	List<fourmi> listFourmi = new ArrayList<fourmi>();
 	
 	//ajout d'une fourmi a la liste
-	public void ajoutFourmi(int charge_max){
-		fourmi maFourmi =  new fourmi(charge_max);
+	public void ajoutFourmi(int charge_max, fourmiliere fourmiliere){
+		fourmi maFourmi =  new fourmi(charge_max, fourmiliere);
 		listFourmi.add(maFourmi);
 	}
 	

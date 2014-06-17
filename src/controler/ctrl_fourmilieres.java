@@ -9,7 +9,7 @@ import modele.fourmiliere;
 public class ctrl_fourmilieres {
 
 	List<fourmiliere> listFourmiliere = new ArrayList<fourmiliere>();
-	public Monde monde;
+	public modele.monde monde;
 	
 	public boolean exist(fourmiliere maFourmiliere){
 		if(listFourmiliere.contains(maFourmiliere)){
@@ -34,11 +34,11 @@ public class ctrl_fourmilieres {
 		return trouve;
 	}
 	
-	public void deleteForumiliere() {
+	public void deleteFourmiliere() {
 		
 	}
 	
-	public void addForumiliere(fourmiliere fourmiliere) {
+	public void addFourmiliere(fourmiliere fourmiliere) {
 		
 	}
 	

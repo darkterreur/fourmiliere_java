@@ -43,7 +43,7 @@ public class fourmiliere {
 	}
 	
 	public void ajoutFourmi(){
-		theCtrlFourmis.ajoutFourmi(10);
+		theCtrlFourmis.ajoutFourmi(10, this);
 	}
 	
 	public void createView() {
