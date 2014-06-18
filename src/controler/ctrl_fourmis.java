@@ -10,7 +10,7 @@ import modele.pheromone;
 
 public class ctrl_fourmis {
 
-	List<fourmi> listFourmi = new ArrayList<fourmi>();
+	ArrayList<fourmi> listFourmi = new ArrayList<fourmi>();
 	
 	//ajout d'une fourmi a la liste
 	public void ajoutFourmi(int charge_max, int X, int Y, fourmiliere fourmiliere, food theFood){

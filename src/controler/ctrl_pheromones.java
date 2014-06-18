@@ -6,7 +6,7 @@ import modele.pheromone;
 
 public class ctrl_pheromones {
 
-	List<pheromone> listPhero = new ArrayList<pheromone>();
+	ArrayList<pheromone> listPhero = new ArrayList<pheromone>();
 	
 	//ajoute un nouveau pheromone a la liste
 	public void ajoutPhero(int qte_base_phero, int X, int Y){
@@ -67,8 +67,13 @@ public class ctrl_pheromones {
 	}
 	
 	//on addition la valeur de base d'un phero si, un phero existe au coordonné ou passe une fourmit 
-	public void cumulPhero(){
-		
+	public void cumulPhero(int qte_base_phero, int X, int Y){
+		if(exist(X, Y)){
+			int i = getIndice(X, Y);
+			listPhero.get(i).ajoutPheromone(listPhero.get(i).getQte_phero() + qte_base_phero);
+		}else{
+			ajoutPhero(qte_base_phero, X, Y);
+		}
 	}
 	
 	//on baisse la qte de phéro de tout les objet et on appel destroyPheros() pour le menage

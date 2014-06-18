@@ -1,5 +1,8 @@
 package modele;
 
+import java.util.ArrayList;
+import java.util.Hashtable;
+
 public class fourmi {
 	//attribut
 	// somme nous sur je ne suis pas persuader pour l'objet fourmiliere quoi que 
@@ -84,6 +87,83 @@ public class fourmi {
 		this.setY(Y);
 	}
 	
+	public ArrayList calculPositionDirectPossible(){
+		/*Quand nous avons deux point x et y en position inconnu tel que i soit xi et yi
+		 * 		
+		 * 		xi+1, yi
+		 * 		xi, yi+1
+		 * 		xi-1, yi
+		 * 		xi, yi-1
+		 * 		xi+1, yi+1
+		 * 		xi-1, yi-1
+		 * 		xi-1, yi+1
+		 * 		xi+1, yi-1
+		 * 
+		*/
+		ArrayList listDeplacement = new ArrayList();
+		int value = 1;
+		
+		switch (value){
+			case 1:
+				Hashtable ht1 = new Hashtable();
+				ht1.put("x", this.getX()+1);
+				ht1.put("y", this.getY());
+				listDeplacement.add(ht1);
+				;
+				
+			case 2:
+				Hashtable ht2 = new Hashtable();
+				ht2.put("x", this.getX());
+				ht2.put("y", this.getY()+1);
+				listDeplacement.add(ht2);
+				;
+				
+			case 3:
+				Hashtable ht3 = new Hashtable();
+				ht3.put("x", this.getX()-1);
+				ht3.put("y", this.getY());
+				listDeplacement.add(ht3);
+				;
+				
+			case 4:
+				Hashtable ht4 = new Hashtable();
+				ht4.put("x", this.getX());
+				ht4.put("y", this.getY()-1);
+				listDeplacement.add(ht4);
+				;
+				
+			case 5:
+				Hashtable ht5 = new Hashtable();
+				ht5.put("x", this.getX()+1);
+				ht5.put("y", this.getY()+1);
+				listDeplacement.add(ht5);
+				;
+				
+			case 6:
+				Hashtable ht6 = new Hashtable();
+				ht6.put("x", this.getX()-1);
+				ht6.put("y", this.getY()-1);
+				listDeplacement.add(ht6);
+				;
+				
+			case 7:
+				Hashtable ht7 = new Hashtable();
+				ht7.put("x", this.getX()-1);
+				ht7.put("y", this.getY()+1);
+				listDeplacement.add(ht7);
+				;
+				
+			case 8:
+				Hashtable ht8 = new Hashtable();
+				ht8.put("x", this.getX()+1);
+				ht8.put("y", this.getY()-1);
+				listDeplacement.add(ht8);
+				;
+		}
+		
+		return listDeplacement;
+		
+	}
 	
 	//accesseur
 	public int getCharge_max() {
