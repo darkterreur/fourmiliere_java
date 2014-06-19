@@ -71,7 +71,7 @@ public class ctrl_fourmis {
 		if(listFourmi.get(i).getCharge_porter() < listFourmi.get(i).getCharge_max()){
     		listFourmi.get(i).incrementCharge();
     	}else{
-    		listFourmi.get(i).setPlein(1);
+    		listFourmi.get(i).setPlein(true);
     	}
 	}
 	
@@ -82,7 +82,7 @@ public class ctrl_fourmis {
 		if(listFourmi.get(i).getCharge_porter() > 0){
     		listFourmi.get(i).decrementCharge();
     	}else{
-    		listFourmi.get(i).setPlein(0);
+    		listFourmi.get(i).setPlein(false);
     	}
 	}
 	

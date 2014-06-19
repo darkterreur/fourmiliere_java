@@ -8,15 +8,19 @@ import modele.simulation;
  
 public class MonJFrame extends JFrame{
  
-        private MonJPanel p  ;
+        /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+		private rendu rendu  ;
       
     
         public MonJFrame(int largeur, int hauteur, simulation sim){
-        		p = new MonJPanel(sim, hauteur);
-               
+        		rendu = new rendu(sim, hauteur);
+        	
                 this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 this.setLocationRelativeTo(null);
-                this.setContentPane(p);
+                this.setContentPane(rendu);
                 this.pack();
                 this.setVisible(true);
                 
@@ -24,8 +28,8 @@ public class MonJFrame extends JFrame{
         }
         
         public void paint(simulation sim){
-        	p.setsimulation(sim);
-        	p.repaint();
+        	rendu.setSimulation(sim);
+        	rendu.repaint();
         }
         
         

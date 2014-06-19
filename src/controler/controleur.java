@@ -1,5 +1,6 @@
 package controler;
 
+import modele.monde;
 import modele.simulation;
 import vue.MonJFrame;
 
@@ -10,11 +11,10 @@ public class controleur {
 	final int SleepDuration = 100; 
 	
 
-	public controleur(int taille) {
+	public controleur(simulation sim, int taille) {
 		this.taille = taille;
-		sim = new simulation(1000);
+		this.sim = sim;
 		fenetre = new MonJFrame(1000, 1000, sim);
-
 	}
 
 	public void run() {

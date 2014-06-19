@@ -5,12 +5,11 @@ import java.util.Hashtable;
 
 public class fourmi {
 	//attribut
-	// somme nous sur je ne suis pas persuader pour l'objet fourmiliere quoi que 
+	// Fourmilière va servir à connaître la fourmilière mère, et d'en déduire les coordonnées lors du retour à la fourmilière 
 	private fourmiliere maFourmiliere;
 	private food monFood;
 	private int x;
 	private int y;
-	//on a plein pour cela
 	//public boolean isRetourFourmiliere = false;
 	private boolean suitPheromone = false;
 	private boolean isSurNourriture = false;
@@ -19,13 +18,14 @@ public class fourmi {
 	
 	private int charge_max;
 	private int charge_porter;
-	private int plein;
+	// Plein est donc un booleen
+	private boolean plein;
 	
 	//methode
 	public fourmi(int charge_max, int X, int Y, fourmiliere theFourmiliere, food theFood) {
 		this.charge_max = charge_max;
 		this.charge_porter = 0;
-		this.plein = 0;
+		this.plein = false;
 		this.x = X;
 		this.y = Y;
 		this.maFourmiliere = theFourmiliere;
@@ -33,6 +33,7 @@ public class fourmi {
 	}
 	
 	//fonction existe deja et on met a jour l'objet nourriture plus haut dans un controleur
+	// C'est une fourmi qui prend de la nourritre
 	// Récupère la nourriture
 	/*public void getNourriture(){
 		// Récupère une quantité de nourriture
@@ -48,7 +49,8 @@ public class fourmi {
 		this.deposePheromone = true;
 	}*/
 	
-	//pareil existe deja et c'est pas le bon endrois 
+	//pareil existe deja et c'est pas le bon endrois
+	// Si c'est le bon endroit : "une Fourmi depose de la nourriture", c'est donc la fourmi qui a cette fonction
 	// Dépose la nourriture à la fourmilière
 	/*public void deposeNourriture(){
 		// Met à jour la quantité dans l'objet fourmilière
@@ -179,10 +181,10 @@ public class fourmi {
 		this.charge_porter = charge_porter;
 	}
 	
-	public int getPlein() {
+	public boolean getPlein() {
 		return plein;
 	}
-	public void setPlein(int plein) {
+	public void setPlein(boolean plein) {
 		this.plein = plein;
 	}
 	public int getX() {

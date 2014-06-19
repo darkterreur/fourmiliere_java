@@ -11,8 +11,8 @@ public class simulation {
 	int largeur ;
 	
 	// Définie si c'est la première fois que la simulation est lancée
-	boolean isStart = true;
-	ArrayList<monde> listeMondes = new ArrayList<monde>();
+	public boolean isStart = true;
+	public ArrayList<monde> listeMondes = new ArrayList<monde>();
 	
 	public simulation(int taille) {
 		hauteur=taille;
@@ -25,5 +25,9 @@ public class simulation {
 		
 		// Parcoure les mondes et avance d'une étape chacun d'eux
 		
+	}
+	
+	public void addMonde(monde m) {
+		this.listeMondes.add(m);
 	}
 }
