@@ -15,8 +15,8 @@ public class ctrl_fourmilieres {
 	public modele.monde monde;
 	
 	
-	public void ajoutFourmiliere(int qte_food_recolter,int X, int Y, int qte_fourmi, int max_fourmi,int qte_food_creat_fourmi, monde monde){
-		fourmiliere myFourmiliere = new fourmiliere(qte_food_recolter, X, Y, qte_fourmi, max_fourmi, qte_food_creat_fourmi, monde);
+	public void ajoutFourmiliere(int qte_food_recolter,int X, int Y, int qte_fourmi, int max_fourmi,int qte_food_creat_fourmi,int qte_food_creat_fourmiliere, monde monde){
+		fourmiliere myFourmiliere = new fourmiliere(qte_food_recolter, X, Y, qte_fourmi, max_fourmi, qte_food_creat_fourmi,qte_food_creat_fourmiliere, monde);
 		listFourmiliere.add(myFourmiliere);
 	}
 	
@@ -71,7 +71,7 @@ public class ctrl_fourmilieres {
 	}
 	
 	public boolean testCreateFourmi(fourmiliere myFourmiliere){           
-    	if(testQuantiteFood(myFourmiliere) && testQuantiteFourmis(myFourmiliere)){
+    	if(testQuantiteFoodFourmi(myFourmiliere) && testQuantiteFourmis(myFourmiliere)){
     		return true;
     	}else{
     		return false;
@@ -81,16 +81,6 @@ public class ctrl_fourmilieres {
 	public boolean testQuantiteFourmis(fourmiliere myFourmiliere) {
 		int i = getIndice(myFourmiliere);
 		
-		if(listFourmiliere.get(i).getQte_food_recolter() > listFourmiliere.get(i).getQte_food_creat_fourmi()){
-			return true;
-		}else{
-			return false;
-		}
-	}
-	
-	public boolean testQuantiteFood(fourmiliere myFourmiliere) {
-		int i = getIndice(myFourmiliere);
-		
 		if(listFourmiliere.get(i).getQte_fourmi() < listFourmiliere.get(i).getMax_fourmi()){
 			return true;
 		}else{
@@ -98,14 +88,71 @@ public class ctrl_fourmilieres {
 		}
 	}
 	
+	public boolean testQuantiteFoodFourmi(fourmiliere myFourmiliere) {
+		int i = getIndice(myFourmiliere);
+		
+		if(listFourmiliere.get(i).getQte_food_recolter() > listFourmiliere.get(i).getQte_food_creat_fourmi()){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	public boolean testQuantiteFoodFourmiliere(fourmiliere myFourmiliere) {
+		int i = getIndice(myFourmiliere);
+		
+		if(listFourmiliere.get(i).getQte_food_recolter() > listFourmiliere.get(i).getQte_food_creat_fourmiliere()){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	//fonction utile pour la cration des fourmis au fur et a mesure du jeux mais on risque d'avoir un probleme 
+	//pour le chargement/initialisation de base ou l'onne prend pas en compte la nourriture et les compteurs
+	//faire une autre fonction peut etre?
 	public void addFourmi(int charge_max,int X,int Y,fourmiliere myFourmiliere,food theFood){
 		int i = getIndice(myFourmiliere);
 		
 		if(testCreateFourmi(myFourmiliere)){
+			//je creer ma fourmi
 			listFourmiliere.get(i).getCtrlFourmis().ajoutFourmi(charge_max,X,Y,myFourmiliere,theFood);
+			//j'incremente le nb de fourmi dans ma fourmiliere
+			listFourmiliere.get(i).setQte_fourmi(listFourmiliere.get(i).getQte_fourmi()+1);
+			//je reduit la food global par la qte de food necessaire a la cration d'une fourmit
+			listFourmiliere.get(i).setQte_food_recolter(listFourmiliere.get(i).getQte_food_recolter()-listFourmiliere.get(i).getQte_food_creat_fourmi());
 		}
 	}
 	
+	public boolean testDupliquerFourmiliere(fourmiliere myFourmiliere){
+		int i = getIndice(myFourmiliere);
+		
+		if(testQuantiteFoodFourmiliere(myFourmiliere) && testQuantiteFourmis(myFourmiliere)==false){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	
+	public void dupliqFourmiliere(fourmiliere myFourmiliere,int qte_food_recolter,int X, int Y, int qte_fourmi, int max_fourmi,int qte_food_creat_fourmi,int qte_food_creat_fourmiliere, monde monde){
+		
+		int i = getIndice(myFourmiliere);
+		
+		if(testDupliquerFourmiliere(myFourmiliere)){
+			
+			//on dduit la qte de food necessaire a la cration de la foumiliere
+			
+			//on dplace la moiti des fourmits d'une fourmiliere a une autre mais je ne sais pas encore comment on fait
+			
+			//on creer une nouvelle fourmiliere en dernier les coordonne doivent etre alatoire ca va etre dur
+			ajoutFourmiliere(qte_food_recolter,X,Y,qte_fourmi,max_fourmi,qte_food_creat_fourmi,qte_food_creat_fourmiliere,monde);
+			
+		}
+		
+		
+		
+		
+		
+	}
 	
 }

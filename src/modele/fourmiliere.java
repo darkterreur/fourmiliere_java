@@ -12,14 +12,16 @@ public class fourmiliere {
 	private int qte_fourmi;
 	private int max_fourmi;
 	private int qte_food_creat_fourmi;
+	private int qte_food_creat_fourmiliere;
 	ctrl_fourmis theCtrlFourmis = new ctrl_fourmis();
 	
 	//methode
-	public fourmiliere(int qte_food_recolter,int X, int Y,  int qte_fourmi, int max_fourmi,int qte_food_creat_fourmi, monde monde) {
+	public fourmiliere(int qte_food_recolter,int X, int Y,  int qte_fourmi, int max_fourmi,int qte_food_creat_fourmi,int qte_food_creat_fourmiliere, monde monde) {
 		this.qte_food_recolter = qte_food_recolter;
 		this.qte_fourmi = qte_fourmi;
 		this.max_fourmi = max_fourmi;
-		this.qte_food_creat_fourmi = 500;
+		this.qte_food_creat_fourmi = qte_food_creat_fourmi;//500
+		this.qte_food_creat_fourmiliere = qte_food_creat_fourmiliere; //10000
 		this.monde = monde;
 		this.x = X;
 		this.y = Y;
@@ -37,7 +39,8 @@ public class fourmiliere {
 	@Override
 	public String toString() {
 		return "fourmiliere [qte_food_recolter=" + qte_food_recolter + ", qte_fourmi=" + qte_fourmi + 
-				", max_fourmi=" + max_fourmi + ", qte_food_creat_fourmi=" + qte_food_creat_fourmi +"]";
+				", max_fourmi=" + max_fourmi + ", qte_food_creat_fourmi=" + qte_food_creat_fourmi +
+				", qte_food_creat_fourmiliere=" + qte_food_creat_fourmiliere +"]";
 	}
 
 	public void ajoutFoodStock(int quantite){
@@ -66,33 +69,32 @@ public class fourmiliere {
 	public int getQte_food_recolter() {
 		return qte_food_recolter;
 	}
-
 	public void setQte_food_recolter(int qte_food_recolter) {
 		this.qte_food_recolter = qte_food_recolter;
 	}
-
 	public int getQte_fourmi() {
 		return qte_fourmi;
 	}
-
 	public void setQte_fourmi(int qte_fourmi) {
 		this.qte_fourmi = qte_fourmi;
 	}
-
 	public int getMax_fourmi() {
 		return max_fourmi;
 	}
-
 	public void setMax_fourmi(int max_fourmi) {
 		this.max_fourmi = max_fourmi;
 	}
-	
 	public int getQte_food_creat_fourmi() {
 		return qte_food_creat_fourmi;
 	}
-
 	public void setQte_food_creat_fourmi(int qte_food_creat_fourmi) {
 		this.qte_food_creat_fourmi = qte_food_creat_fourmi;
+	}
+	public int getQte_food_creat_fourmiliere() {
+		return qte_food_creat_fourmi;
+	}
+	public void setQte_food_creat_fourmiliere(int qte_food_creat_fourmiliere) {
+		this.qte_food_creat_fourmiliere = qte_food_creat_fourmiliere;
 	}
 	public int getX() {
 		return x;
@@ -106,7 +108,6 @@ public class fourmiliere {
 	public void setY(int Y) {
 		this.y = Y;
 	}
-	
 	public ctrl_fourmis getCtrlFourmis(){
 		return theCtrlFourmis;
 	}
