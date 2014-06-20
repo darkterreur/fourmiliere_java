@@ -2,7 +2,6 @@ package modele;
 
 public class obstacle {
 	public static String cailloux = "cailloux";
-	public static String feuille = "feuille";
 	public static String flac = "flac";
 	public static String branche = "branche";
 	

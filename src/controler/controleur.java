@@ -18,10 +18,14 @@ public class controleur {
 	}
 
 	public void run() {
+		fenetre.paint(sim);
+		sim.setIsStart(false);
+		
 		while (true)  {
 			sim.nextStep();
-			 
-			fenetre.paint(sim);
+			
+			fenetre.repaint();
+			
 			try {Thread.sleep(SleepDuration);
 			} catch (InterruptedException e) {
 				e.printStackTrace();

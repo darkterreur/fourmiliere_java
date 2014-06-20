@@ -2,18 +2,23 @@ package modele;
 
 public class food {
 	//attribut
-	private int valeur_base_food;
-	private int qte_rest_food;
-	private int x;
-	private int y;
+	public static String feuille = "feuille";
+	
+	protected int valeur_base_food;
+	protected int qte_rest_food;
+	protected int x;
+	protected int y;
+	protected int width = 0;
+	protected int height = 0;
+	protected String forme;
 	//prevoir d'une maniere ou d'une autre une liste de point
 	
 	//methode
-	public food(int valeur_base_food, int X, int Y) {
-		this.valeur_base_food = valeur_base_food;
+	public food(String forme, int X, int Y) {
 		this.qte_rest_food = valeur_base_food;
 		this.x = X;
 		this.y = Y;
+		this.forme = forme;
 	}
 	@Override
 	public String toString() {
@@ -22,10 +27,30 @@ public class food {
 	}
 	
 	public void decrementeFood(){
-		this.setQte_rest_food(this.getQte_rest_food() - 1);
+		this.qte_rest_food--;
+	}
+	
+	/**
+	 * Test la valeur de la nourriture pour savoir quelle apparence elle aura
+	 * @return int Le pourcentage utilisé de la nourriture
+	 */
+	public int testValeurFood() {
+		return ((this.qte_rest_food * 100) / this.valeur_base_food);
 	}
 	
 	//accesseur
+	public String getForme() {
+		return this.forme;
+	}
+	
+	public int getWidth() {
+		return this.width;
+	}
+	
+	public int getHeight() {
+		return this.height;
+	}
+	
 	public int getValeur_base_food() {
 		return valeur_base_food;
 	}
