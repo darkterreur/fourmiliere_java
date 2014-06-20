@@ -8,12 +8,14 @@ public class pheromone {
 	private int y;
 	
 	//methode
-	public pheromone(int phero_base, int X, int Y) {
-		this.qte_phero = phero_base;
-		this.phero_base = phero_base;
+	public pheromone(int X, int Y) {
+		/*this.qte_phero = phero_base;
+		this.phero_base = phero_base;*/
 		this.x = X;
 		this.y = Y;
 	}
+	
+	/*
 	@Override
 	public String toString() {
 		return "pheromone [qte_phero=" + qte_phero + ", phero_base=" + phero_base + ", x=" + x + ", y=" + y + "]";
@@ -24,13 +26,12 @@ public class pheromone {
 		int cumul = this.getQte_phero() + add;
 		this.setQte_phero(cumul);
 	}
+	*/
 	
 	//fonction qui enleve 1 de pheromone a chaque tour
 	public void decrementePheromone(){
 		this.setQte_phero(this.getQte_phero()-1);
 	}
-	
-	
 	
 	//accesseur
 	public int getQte_phero() {

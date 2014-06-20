@@ -51,6 +51,7 @@ public class fourmi {
 		int positionInitialeX = this.x;
 		int positionInitialeY = this.y;
 		
+		/*
 		if (this.isContournementBas || this.isContournementGauche || this.isContournementHaut || this.isContournementDroite) {
 			this.contourneObstacle();
 			this.isContournementBas = false;
@@ -58,8 +59,13 @@ public class fourmi {
 			this.isContournementHaut = false;
 			this.isContournementDroite = false;
 			this.indexObstacleAContourner = -1;
-		} else if (this.isRetourFourmiliere) {
+		} else
+		*/
+		
+		if (this.isRetourFourmiliere) {
 			// Avancer vers la fourmilière en ligne droite
+			this.deposePheromone();
+			
 			if (this.x > this.fourmiliereMere.getX()) {
 				this.x-=5;
 			} else if (this.x < this.fourmiliereMere.getX()) {
@@ -154,7 +160,12 @@ public class fourmi {
 	public int getHeight() {
 		return this.height;
 	}
-
+	
+	// Dépose une quantité de phéromone à l'emplacement courant
+	public void deposePheromone(){
+		this.fourmiliereMere.getMonde().getPheromones().add(new pheromone(this.x, this.y));
+	}
+	
 	// Vérifie si des phéromones sont proches de la position de la fourmi
 	public void pheromoneAProximite(){
 
