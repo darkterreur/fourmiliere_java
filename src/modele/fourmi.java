@@ -25,6 +25,11 @@ public class fourmi {
 	private boolean isSurNourriture = false;
 	public boolean deposePheromone = false;
 	private int indexNourritureMangee;
+	private int indexObstacleAContourner;
+	private boolean isContournementBas = false;
+	private boolean isContournementGauche = false;
+	private boolean isContournementHaut = false;
+	private boolean isContournementDroite = false;
 	
 	/*
 	private food monFood;
@@ -43,7 +48,17 @@ public class fourmi {
 	
 	// Fait avancer la fourmie d'un pas
 	public void avance() {
-		if (this.isRetourFourmiliere) {
+		int positionInitialeX = this.x;
+		int positionInitialeY = this.y;
+		
+		if (this.isContournementBas || this.isContournementGauche || this.isContournementHaut || this.isContournementDroite) {
+			this.contourneObstacle();
+			this.isContournementBas = false;
+			this.isContournementGauche = false;
+			this.isContournementHaut = false;
+			this.isContournementDroite = false;
+			this.indexObstacleAContourner = -1;
+		} else if (this.isRetourFourmiliere) {
 			// Avancer vers la fourmilière en ligne droite
 			if (this.x > this.fourmiliereMere.getX()) {
 				this.x-=5;
@@ -56,14 +71,9 @@ public class fourmi {
 			} else if (this.y < this.fourmiliereMere.getY()) {
 				this.y+=5;
 			}
-		} else if (false) {
-		// Sinon si la fourmi se trouve sur de la nourriture, c'est à dire que les x et y correspondent à l'emplacement d'une nourriture du monde
-			// La fourmi récupère de la nourriture
 		} else if (this.isSurNourriture()) {
 			this.getNourriture();
 		} else if (false) {
-		// Sinon si la fourmi repère de la nourriture, c'est à dire que de la nourriture se situe dans l'entourage proche de la fourmi
-			// Se déplacer vers la nourriture
 		// Sinon si la fourmi suit des phéromones
 			// Chercher une autre phéromone
 			// Se déplacer à l'emplacement de la phéromone trouvée
@@ -81,9 +91,17 @@ public class fourmi {
 				this.y = positions.get("y");
 			}
 		}
-
+		
 		// Si la direction définie est un obstacle, lancer le contournement de l'obstacle
-		// Sinon, se déplacer sur la case
+		while (this.directionIsObstacle()) {
+			//this.contourneObstacle();
+			this.x = positionInitialeX;
+			this.y = positionInitialeY;
+			
+			Hashtable<String, Integer> positions = this.calculDeplacementAleatoire();
+			this.x = positions.get("x");
+			this.y = positions.get("y");
+		}
 	}
 	
 	public Hashtable calculDeplacementAleatoire() {
@@ -141,7 +159,7 @@ public class fourmi {
 	public void pheromoneAProximite(){
 
 	}
-
+	
 	// Cherche le prochain phéromone à suivre
 	public void searchNextPheromone(){
 
@@ -163,7 +181,24 @@ public class fourmi {
 		
 		return false;
 	}
-
+	
+	public boolean directionIsObstacle() {
+		ArrayList<obstacle> obstacles = this.fourmiliereMere.getMonde().getObstacles();
+		
+		for (int k=0; k<obstacles.size(); k++) {
+			obstacle obstacleCourant = obstacles.get(k);
+			
+			if (obstacleCourant.getForme() == obstacle.cailloux) {
+				if ((this.x >= obstacleCourant.x && this.x <= obstacleCourant.x+10) && (this.y >= obstacleCourant.y && this.y <= obstacleCourant.y+10)) {
+					this.indexObstacleAContourner = k;
+					return true;
+				}
+			}
+		}
+		
+		return false;	
+	}
+	
 	// Récupère la nourriture
 	public void getNourriture(){
 		// Récupère une quantité de nourriture
@@ -207,7 +242,47 @@ public class fourmi {
 
 	// Contourne un obstacle selon la stratégie d'évitement définie par l'utilisateur
 	public void contourneObstacle(){
-
+		obstacle obstacleAContourner = this.fourmiliereMere.getMonde().getObstacles().get(this.indexObstacleAContourner);
+		
+		/*if (this.isContournementHaut) {
+			this.x += 5;
+		} else if (this.isContournementBas) {
+			this.x -=5;
+		} else if (this.isContournementDroite) {
+			this.y -= 5;
+		} else if (this.isContournementGauche) {
+			this.y += 5;
+		} else {*
+			if (this.x < obstacleAContourner.x && this.y == obstacleAContourner.y) {
+				// Arrive de la gauche : contourne par le haut
+				this.isContournementHaut = true;
+				this.y += 5;
+			} else if (this.x > obstacleAContourner.x && this.y == obstacleAContourner.y) {
+				// Arrive de la droite : contourne par le bas
+				this.isContournementBas = true;
+				this.y -= 5;
+			} else if (this.x == obstacleAContourner.x && this.y > obstacleAContourner.y) {
+				// Arrive par le haut : contourne par la droite
+				this.isContournementDroite = true;
+				this.x += 5;
+			} else if (this.x == obstacleAContourner.x && this.y < obstacleAContourner.y) {
+				// Arrive par le bas : contourne par la gauche
+				this.isContournementGauche = true;
+				this.x -= 5;
+			} else if (this.x < obstacleAContourner.x && this.y > obstacleAContourner.y) {
+				// Arrive par en haut à gauche : contourne par la droite
+				this.x += 5;
+			} else if (this.x > obstacleAContourner.x && this.y > obstacleAContourner.y) {
+				// Arrive par en haut à droite : contourne par le bas
+				this.y -= 5;
+			} else if (this.x > obstacleAContourner.x && this.y < obstacleAContourner.y) {
+				// Arrive par en bas à droite : contourne par la gauche
+				this.x -= 5;
+			}  else if (this.x < obstacleAContourner.x && this.y < obstacleAContourner.y) {
+				// Arrive par en bas à gauche : contourne par le haut
+				this.y += 5;
+			}
+		//}*/
 	}	
 	
 	//fonction existe deja et on met a jour l'objet nourriture plus haut dans un controleur
