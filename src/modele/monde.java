@@ -45,6 +45,17 @@ public class monde{
 	    	fourmiliere f = fourmilieres.get(i);
 	    	f.nextStep();
 	    }
+		
+		// Parcours toutes les phéromones
+		ArrayList<pheromone> pheromones = this.pheromones;
+		
+		for (int i=0; i<pheromones.size(); i++) {
+			pheromones.get(i).decrementePheromone();
+			
+			if (pheromones.get(i).isEmpty()) {
+				pheromones.remove(i);
+			}
+	    }
 	}
 	
 	//accesseur

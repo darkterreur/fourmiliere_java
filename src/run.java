@@ -52,7 +52,7 @@ public class run {
 		// Fourmilière
 		fourmiliere f = new fourmiliere(200, 220, monde1);
 		
-		for (int k=0; k<100; k++) {
+		for (int k=0; k<15; k++) {
 			f.addFourmi();
 		}
 		
