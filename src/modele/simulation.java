@@ -4,6 +4,9 @@ import java.awt.Color;
 import java.awt.Polygon;
 import java.util.ArrayList;
 
+import vue.Parametrage;
+
+import com.sun.org.apache.xalan.internal.xsltc.runtime.Parameter;
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;
 
 public class simulation {
@@ -14,16 +17,25 @@ public class simulation {
 	public ArrayList<monde> listeMondes = new ArrayList<monde>();
 	// Définie si c'est la première fois que la simulation est lancée
 	private boolean isStart = true;
+	private Parametrage params;
 	
-	public simulation(int taille) {
-		hauteur=taille;
-		largeur=taille;
-		x=0;
-		y=0;
+	public simulation(Parametrage params) {
+		this.hauteur=params.getTaille();
+		this.largeur=params.getTaille();
+		this.x=0;
+		this.y=0;
 	}
 	
 	public int getHauteur() {
 		return this.hauteur;
+	}
+	
+	public Parametrage getParams() {
+		return this.params;
+	}
+	
+	public void setParams(Parametrage  parametres) {
+		this.params = parametres;
 	}
 	
 	public int getLargeur() {

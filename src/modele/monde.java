@@ -1,6 +1,9 @@
 package modele;
 
 import java.util.ArrayList;
+import java.util.Random;
+
+import vue.Parametrage;
 
 public class monde{
 
@@ -13,6 +16,8 @@ public class monde{
 	private int qte_obj_obst;
 	private int qte_fourm;
 	private int qte_obj_food;
+	private int vitesseEvaporationPhero;
+	private boolean obstacleEntreFourmiliereEtNourriture;
 	private simulation sim;
 	private ArrayList<obstacle> obstacles = new ArrayList<obstacle>();
 	private ArrayList<food> foods = new ArrayList<food>();
@@ -20,11 +25,72 @@ public class monde{
 	private ArrayList<pheromone> pheromones = new ArrayList<pheromone>();
 	
 	//methode
-	public monde(int qte_obj_obst, int qte_fourm, int qte_obj_food, simulation simul) {
-		this.qte_obj_obst = qte_obj_obst;
-		this.qte_fourm = qte_fourm;
-		this.qte_obj_food = qte_obj_food;
+	public monde(Parametrage params, simulation simul) {
+		this.qte_obj_obst = params.getQteObstacles();
+		this.qte_fourm = params.getNombreFourmis();
+		this.qte_obj_food = params.getQteFood();
+		this.vitesseEvaporationPhero = params.getVitesseEvapoPhero();
+		this.obstacleEntreFourmiliereEtNourriture = obstacleEntreFourmiliereEtNourriture;
 		this.sim = simul;
+		Random rand = new Random();
+		int k=0,x=0,y=0;
+		
+		/*
+		this.addCailloux(100, 10);
+		this.addCailloux(200, 100);
+		this.addCailloux(200, 110);
+		this.addCailloux(200, 120);
+		this.addCailloux(200, 130);
+		
+		this.addCailloux(210, 90);
+		this.addCailloux(210, 100);
+		this.addCailloux(210, 110);
+		this.addCailloux(210, 120);
+		
+		this.addCailloux(190, 120);
+		this.addCailloux(230, 120);
+		
+		this.addCailloux(210, 130);
+		this.addCailloux(210, 140);
+		this.addCailloux(210, 150);
+		
+		this.addCailloux(210, 150);
+		this.addCailloux(200, 150);
+		this.addCailloux(220, 150);
+		
+		this.addCailloux(210, 160);
+		this.addCailloux(210, 170);
+		
+		this.addCailloux(220, 100);
+		this.addCailloux(220, 110);
+		this.addCailloux(220, 120);
+		this.addCailloux(220, 130);
+		*/
+		
+		for (k=0; k<this.qte_obj_food; k++) {
+			x = rand.nextInt(this.sim.largeur);
+			y = rand.nextInt(this.sim.hauteur);
+			this.addFeuille(x, y);
+		}
+		
+		for (k=0; k<this.qte_obj_obst; k++) {
+			x = rand.nextInt(this.sim.largeur);
+			y = rand.nextInt(this.sim.hauteur);
+			this.addCailloux(x, y);
+		}
+		
+		/*
+		this.addFlac(450, 300);
+		*/
+		
+		// Fourmilière
+		fourmiliere f = new fourmiliere(200, 220, this);
+		
+		for (k=0; k<this.qte_fourm; k++) {
+			f.addFourmi();
+		}
+		
+		this.addFourmilere(f);
 	}
 	
 	public simulation getSimulation() {
@@ -65,6 +131,10 @@ public class monde{
 	
 	public ArrayList<food> getFoods() {
 		return this.foods;
+	}
+	
+	public int getVitesseEvaporationPhero() {
+		return this.vitesseEvaporationPhero;
 	}
 	
 	public ArrayList<fourmiliere> getFourmilieres() {

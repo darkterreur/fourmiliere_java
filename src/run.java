@@ -1,3 +1,15 @@
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+
+import vue.MonJDialog;
+import vue.MonJFrame;
+import vue.Parametrage;
 import modele.fourmiliere;
 import modele.monde;
 import modele.simulation;
@@ -6,62 +18,74 @@ import controler.controleur;
 
 public class run {
 
+
+	
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		final int taille = 500;
-		simulation sim = new simulation(taille);
-		monde monde1 = new monde(1, 10, 3, sim);
+		String tailleText = "";
+		String nombreFourmisText = "";
+		String qteObstaclesText = "";
+		String qteNourritureText = "";
+		String vitesseEvapoText = "";
+		boolean obstacleEntreFoumEtNour = Parametrage.OBSTACLES_ENTRE_FOURMILIERE_ET_NOURRITURE;
+		Parametrage params = null;
+		JFrame parametrageSimulationFrame = new JFrame();
+		int option = 0;
 		
-		monde1.addCailloux(100, 10);
-		monde1.addCailloux(200, 100);
-		monde1.addCailloux(200, 110);
-		monde1.addCailloux(200, 120);
-		monde1.addCailloux(200, 130);
+		JTextField tailleField = new JTextField();
+		tailleField.setText(String.valueOf(Parametrage.TAILLE_DEFAUT));
 		
-		monde1.addCailloux(210, 90);
-		monde1.addCailloux(210, 100);
-		monde1.addCailloux(210, 110);
-		monde1.addCailloux(210, 120);
+		JTextField nombreFourmisField = new JTextField();
+		nombreFourmisField.setText(String.valueOf(Parametrage.NOMBRE_FOURMIS));
 		
-		monde1.addCailloux(190, 120);
-		monde1.addCailloux(230, 120);
+		JTextField qteObstaclesField = new JTextField();
+		qteObstaclesField.setText(String.valueOf(Parametrage.QTE_OBSTACLES));
 		
-		monde1.addCailloux(210, 130);
-		monde1.addCailloux(210, 140);
-		monde1.addCailloux(210, 150);
+		JTextField qteNourritureField = new JTextField();
+		qteNourritureField.setText(String.valueOf(Parametrage.QTE_NOURRITURE));
 		
-		monde1.addCailloux(210, 150);
-		monde1.addCailloux(200, 150);
-		monde1.addCailloux(220, 150);
+		JTextField vitesseEvapoField = new JTextField();
+		vitesseEvapoField.setText(String.valueOf(Parametrage.VITESSE_EVAPO_PHERO));
 		
-		monde1.addCailloux(210, 160);
-		monde1.addCailloux(210, 170);
+		JCheckBox obstacleEntreFoumEtNourBox = new JCheckBox();
 		
-		monde1.addCailloux(220, 100);
-		monde1.addCailloux(220, 110);
-		monde1.addCailloux(220, 120);
-		monde1.addCailloux(220, 130);
-		
-		monde1.addFeuille(300, 250);
-		monde1.addFeuille(250, 300);
-		
-		monde1.addFlac(450, 300);
-		
-		// Fourmilière
-		fourmiliere f = new fourmiliere(200, 220, monde1);
-		
-		for (int k=0; k<15; k++) {
-			f.addFourmi();
+		while (option != JOptionPane.CANCEL_OPTION && option != JOptionPane.CLOSED_OPTION &&
+				(tailleText.isEmpty() || nombreFourmisText.isEmpty() || qteObstaclesText.isEmpty() || qteNourritureText.isEmpty() || vitesseEvapoText.isEmpty())) {
+			Object[] message = {
+			    "Taille :", tailleField,
+			    "Nombre de fourmis :", nombreFourmisField,
+			    "Quantité d'obstacles :", qteObstaclesField,
+			    "Quantité de nourriture :", qteNourritureField,
+			    "Vitesse d'évaporation des phéromones :", vitesseEvapoField,
+			    "Obstacle entre la fourmilière et la nourriture :", obstacleEntreFoumEtNourBox
+			};
+			
+			option = JOptionPane.showConfirmDialog(parametrageSimulationFrame, message, "Entrez le paramétrage de la simulation :", JOptionPane.OK_CANCEL_OPTION);
+			
+			if (option == JOptionPane.OK_OPTION)
+			{
+			    tailleText = tailleField.getText();
+			    nombreFourmisText = nombreFourmisField.getText();
+			    qteObstaclesText = qteObstaclesField.getText();
+			    qteNourritureText = qteNourritureField.getText();
+			    vitesseEvapoText = vitesseEvapoField.getText();
+			    if (obstacleEntreFoumEtNourBox.isSelected()) obstacleEntreFoumEtNour = true;
+			}
 		}
 		
-		monde1.addFourmilere(f);
-		
-		sim.addMonde(monde1);
-		
-		controleur c = new controleur(sim, taille);
-		c.run();
+		if (option != JOptionPane.CANCEL_OPTION && option != JOptionPane.CLOSED_OPTION) {
+			params = new Parametrage(Integer.valueOf(tailleText), Integer.valueOf(nombreFourmisText), Integer.valueOf(qteObstaclesText), Integer.valueOf(qteNourritureText), Integer.valueOf(vitesseEvapoText), obstacleEntreFoumEtNour);
+			
+			simulation sim = new simulation(params);
+			monde monde1 = new monde(params, sim);
+			
+			sim.addMonde(monde1);
+			
+			controleur c = new controleur(sim, params.getTaille());
+			c.run(sim);
+		}
 	}
-
+	
 }

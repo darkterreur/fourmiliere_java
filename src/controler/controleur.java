@@ -14,10 +14,10 @@ public class controleur {
 	public controleur(simulation sim, int taille) {
 		this.taille = taille;
 		this.sim = sim;
-		fenetre = new MonJFrame(1000, 1000, sim);
+		fenetre = new MonJFrame(taille, taille, sim);
 	}
 
-	public void run() {
+	public void run(simulation sim) {
 		fenetre.paint(sim);
 		sim.setIsStart(false);
 		

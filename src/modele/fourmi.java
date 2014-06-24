@@ -17,8 +17,8 @@ public class fourmi {
 	private fourmiliere fourmiliereMere;
 	private int x;
 	private int y;
-	private int width = 10;
-	private int height = 10;
+	private int width = 7;
+	private int height = 7;
 	private int chargePortee = 0;
 	private boolean isRetourFourmiliere = false;
 	private boolean suitPheromone = false;
@@ -27,11 +27,12 @@ public class fourmi {
 	private int indexNourritureMangee;
 	private int indexObstacleAContourner;
 	// Dernier phéromone déposé
-	private int indexLastPheromone = -1;
+	private pheromone lastPheromone = null;
 	private boolean isContournementBas = false;
 	private boolean isContournementGauche = false;
 	private boolean isContournementHaut = false;
 	private boolean isContournementDroite = false;
+	private ArrayList<Hashtable<String, Integer>> troisDerniersDeplacements = new ArrayList<Hashtable<String, Integer>>();
 	
 	// Constructeur
 	public fourmi(fourmiliere f) {
@@ -77,24 +78,25 @@ public class fourmi {
 			if (this.x == this.fourmiliereMere.getX() && this.y == this.fourmiliereMere.getY()) {
 				this.deposeNourriture();
 			}
-		// Sinon si la fourmi se trouve sur de la nourriture, c'est à dire que les x et y correspondent à l'emplacement d'une nourriture du monde
+		// Sinon si la fourmi se trouve sur de la nourriture, c'est à dire que les x et y correspondent à l'emplacement d'une nourriture du monde, elle la récupère
 		} else if (this.isSurNourriture()) {
-			// La fourmi récupère de la nourriture
 			this.getNourriture();
 		// Sinon si la fourmi suit des phéromones
 		} else if (this.suitPheromone) {
 			// Cherche une autre phéromone et se déplace à l'emplacement de la phéromone trouvée
 			try {
-				pheromone phero = this.fourmiliereMere.getMonde().getPheromones().get(this.indexLastPheromone);
+				int indexLastPhero = this.fourmiliereMere.getMonde().getPheromones().indexOf(this.lastPheromone);
 				
-				if (phero != null) {
+				if (indexLastPhero >= 0) {
+					pheromone phero = this.fourmiliereMere.getMonde().getPheromones().get(indexLastPhero);
+					
 					if (phero.hasNextPheromone()) {
 						pheromone pheromoneSuivante = phero.getPheromoneSuivante();
 						
 						if (pheromoneSuivante != null) {
-							this.x = phero.getPheromoneSuivante().getX();
-							this.y = phero.getPheromoneSuivante().getY();
-							this.indexLastPheromone = phero.getIndexOfNextPheromone();
+							this.x = pheromoneSuivante.getX();
+							this.y = pheromoneSuivante.getY();
+							this.lastPheromone = pheromoneSuivante;
 						} else {
 							this.suitPheromone = false;
 							Hashtable<String, Integer> positions = this.calculDeplacementAleatoire();
@@ -124,7 +126,8 @@ public class fourmi {
 			// Cherche une phéromone à proximité
 			if (this.hasPheromoneAProximite()) {
 				// Se déplace vers celle-ci
-				pheromone phero = this.fourmiliereMere.getMonde().getPheromones().get(this.indexLastPheromone);
+				int indexLastPhero = this.fourmiliereMere.getMonde().getPheromones().indexOf(this.lastPheromone);
+				pheromone phero = this.fourmiliereMere.getMonde().getPheromones().get(indexLastPhero);
 				this.x = phero.getX();
 				this.y = phero.getY();
 				this.suitPheromone = true;
@@ -136,15 +139,36 @@ public class fourmi {
 				this.y = positions.get("y");
 			}
 		}
-
-		// Tant que la direction définie est un obstacle, contourne l'obstacle
-		while (this.directionIsObstacle()) {
+		
+		Hashtable<String, Integer> deplacementCourant = new Hashtable<String, Integer>();
+		deplacementCourant.put("x", this.x);
+		deplacementCourant.put("y", this.y);
+		int i = 0;
+		// Tant que la direction définie est un obstacle, contourne l'obstacle OU que le déplacement à déjà été effectué
+		while (this.directionIsObstacle() || (this.troisDerniersDeplacements.contains(deplacementCourant) && !this.suitPheromone && !this.deposePheromone)) {
 			this.x = positionInitialeX;
 			this.y = positionInitialeY;
 			
 			Hashtable<String, Integer> positions = this.calculDeplacementAleatoire();
 			this.x = positions.get("x");
 			this.y = positions.get("y");
+			
+			deplacementCourant.put("x", this.x);
+			deplacementCourant.put("y", this.y);
+		}
+		
+		// Calcul du dernier déplacement
+		if (this.troisDerniersDeplacements.size() >= 3) {
+			Hashtable<String, Integer> temp1 = this.troisDerniersDeplacements.get(1);
+			Hashtable<String, Integer> temp2 = this.troisDerniersDeplacements.get(2);
+			
+			this.troisDerniersDeplacements = new ArrayList<Hashtable<String, Integer>>();
+			
+			this.troisDerniersDeplacements.add(0, temp1);
+			this.troisDerniersDeplacements.add(1, temp2);
+			this.troisDerniersDeplacements.add(2, deplacementCourant);
+		} else {
+			this.troisDerniersDeplacements.add(deplacementCourant);
 		}
 		
 		// Puis se déplace à la position définie
@@ -203,16 +227,16 @@ public class fourmi {
 	
 	// Dépose une quantité de phéromone à l'emplacement courant
 	public void deposePheromone() {
-		if (this.indexLastPheromone == -1) {
-			pheromone phero = new pheromone(this.x, this.y, this.indexLastPheromone, this.fourmiliereMere.getMonde());
+		if (this.lastPheromone == null) {
+			pheromone phero = new pheromone(this.x, this.y, this.lastPheromone, this.fourmiliereMere.getMonde());
 			
 			this.fourmiliereMere.getMonde().getPheromones().add(phero);
-			this.indexLastPheromone = this.fourmiliereMere.getMonde().getPheromones().lastIndexOf(phero);
+			this.lastPheromone = phero;
 		} else {
-			pheromone phero = new pheromone(this.x, this.y, this.indexLastPheromone, this.fourmiliereMere.getMonde());
+			pheromone phero = new pheromone(this.x, this.y, this.lastPheromone, this.fourmiliereMere.getMonde());
 			
 			this.fourmiliereMere.getMonde().getPheromones().add(phero);
-			this.indexLastPheromone = this.fourmiliereMere.getMonde().getPheromones().lastIndexOf(phero);
+			this.lastPheromone = phero;
 		}
 		/*if (this.indexLastPheromone == -1) {
 			this.fourmiliereMere.getMonde().getPheromones().add(new pheromone(this.x, this.y, true, -1));
@@ -238,7 +262,7 @@ public class fourmi {
 				|| this.x+5 == pheromoneCourant.getX() && this.y-5 == pheromoneCourant.getY()
 			   )
 			{
-				this.indexLastPheromone = k;
+				this.lastPheromone = pheromoneCourant;
 				return true;
 			}
 		}
@@ -291,7 +315,7 @@ public class fourmi {
 			obstacle obstacleCourant = obstacles.get(k);
 			
 			if (obstacleCourant.getForme() == obstacle.cailloux) {
-				if ((this.x >= obstacleCourant.x && this.x <= obstacleCourant.x+10) && (this.y >= obstacleCourant.y && this.y <= obstacleCourant.y+10)) {
+				if ((this.x >= obstacleCourant.x-(this.width) && this.x <= obstacleCourant.x+10) && (this.y >= obstacleCourant.y-(this.height) && this.y <= obstacleCourant.y+10)) {
 					this.indexObstacleAContourner = k;
 					return true;
 				}

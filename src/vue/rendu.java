@@ -26,15 +26,14 @@ public class rendu extends JPanel {
 	
 	private simulation sim;
 	
-	public rendu(simulation sim, int taille) {
+	public rendu(simulation sim) {
 		super();
 		this.sim = sim;
-		this.setPreferredSize(new Dimension(taille, taille));
+		this.setPreferredSize(new Dimension(sim.getHauteur(), sim.getLargeur()));
 	}
 	
 	public void paintComponent(Graphics g) {
 		monde m = this.sim.listeMondes.get(0);
-		
 		// Initialisations des objets du monde
 		//if (this.sim.isStart()) {
 			// Fourmilière

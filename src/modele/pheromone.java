@@ -3,24 +3,24 @@ package modele;
 public class pheromone {
 	//attribut
 	private int qte_phero;
-	private int phero_base = 50;
 	private int x;
 	private int y;
-	private int indexOfNextPheromone = -1;
+	private pheromone nextPheromone = null;
 	private monde m;
 	
 	//methode
-	public pheromone(int X, int Y, int indexOfNextPheromone, monde m) {
-		this.qte_phero = phero_base;
+	public pheromone(int X, int Y, pheromone nextPheromone, monde m) {
 		this.x = X;
 		this.y = Y;
-		this.indexOfNextPheromone = indexOfNextPheromone;
+		this.nextPheromone = nextPheromone;
 		this.m = m;
+		this.qte_phero = this.m.getVitesseEvaporationPhero();
 	}
 	
 	public pheromone getPheromoneSuivante () {
 		try {
-			pheromone phero = this.m.getPheromones().get(this.indexOfNextPheromone);
+			int indexNextPhero = this.m.getPheromones().indexOf(nextPheromone);
+			pheromone phero = this.m.getPheromones().get(indexNextPhero);
 			return phero;
 		} catch (IndexOutOfBoundsException exception) {
 			return null;
@@ -36,7 +36,8 @@ public class pheromone {
 	}
 	
 	public boolean hasNextPheromone() {
-		if (this.indexOfNextPheromone >= 0) {
+		pheromone phero = this.getPheromoneSuivante();
+		if (phero != null) {
 			return true;
 		} else {
 			return false;
@@ -44,7 +45,7 @@ public class pheromone {
 	}
 	
 	public int getIndexOfNextPheromone() {
-		return this.indexOfNextPheromone;
+		return this.m.getPheromones().indexOf(nextPheromone);
 	}
 	
 	/*
@@ -72,12 +73,7 @@ public class pheromone {
 	public void setQte_phero(int qte_phero) {
 		this.qte_phero = qte_phero;
 	}
-	public int getPhero_base() {
-		return phero_base;
-	}
-	public void setPhero_base(int phero_base) {
-		this.phero_base = phero_base;
-	}
+	
 	public int getX() {
 		return x;
 	}
