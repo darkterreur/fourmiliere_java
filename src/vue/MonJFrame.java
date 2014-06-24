@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 import modele.simulation;
  
@@ -26,7 +27,7 @@ public class MonJFrame extends JFrame{
 		
         this.setContentPane(rendu);
 		this.setSize(sim.getHauteur(),sim.getLargeur());
-        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
         this.pack();
         this.setVisible(true);

@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Polygon;
 import java.util.ArrayList;
 
-import vue.Parametrage;
 
 import com.sun.org.apache.xalan.internal.xsltc.runtime.Parameter;
 import com.sun.xml.internal.bind.v2.schemagen.xmlschema.List;

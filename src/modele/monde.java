@@ -3,7 +3,6 @@ package modele;
 import java.util.ArrayList;
 import java.util.Random;
 
-import vue.Parametrage;
 
 public class monde{
 

@@ -7,9 +7,9 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-import vue.MonJDialog;
 import vue.MonJFrame;
-import vue.Parametrage;
+import modele.Fichier;
+import modele.Parametrage;
 import modele.fourmiliere;
 import modele.monde;
 import modele.simulation;
@@ -74,6 +74,8 @@ public class run {
 			    if (obstacleEntreFoumEtNourBox.isSelected()) obstacleEntreFoumEtNour = true;
 			}
 		}
+		
+		Fichier.ecrire(Parametrage.EMPLACEMENT_SAUVEGARDE, "fuck you\r\nNIQUE TA MERE");
 		
 		if (option != JOptionPane.CANCEL_OPTION && option != JOptionPane.CLOSED_OPTION) {
 			params = new Parametrage(Integer.valueOf(tailleText), Integer.valueOf(nombreFourmisText), Integer.valueOf(qteObstaclesText), Integer.valueOf(qteNourritureText), Integer.valueOf(vitesseEvapoText), obstacleEntreFoumEtNour);

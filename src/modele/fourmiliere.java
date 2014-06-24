@@ -2,8 +2,6 @@ package modele;
 
 import java.util.ArrayList;
 
-import controler.ctrl_fourmis;
-
 public class fourmiliere {
 	
 	//attribut
@@ -18,7 +16,6 @@ public class fourmiliere {
 	private int width = 0;
 	private int height = 0;
 	private ArrayList<fourmi> fourmis = new ArrayList<fourmi>();
-	//ctrl_fourmis theCtrlFourmis = new ctrl_fourmis();
 	
 	//methode
 	public fourmiliere(int X, int Y, monde m) {//int qte_food_recolter,int X, int Y,  int qte_fourmi, int max_fourmi,int qte_food_creat_fourmi,int qte_food_creat_fourmiliere, monde monde) {
@@ -137,9 +134,4 @@ public class fourmiliere {
 	public void setY(int Y) {
 		this.y = Y;
 	}
-	/*public ctrl_fourmis getCtrlFourmis(){
-		return theCtrlFourmis;
-	}*/
-	
-	
 }
