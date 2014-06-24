@@ -17,6 +17,7 @@ public class monde{
 	private ArrayList<obstacle> obstacles = new ArrayList<obstacle>();
 	private ArrayList<food> foods = new ArrayList<food>();
 	private ArrayList<fourmiliere> fourmilieres = new ArrayList<fourmiliere>();
+	private ArrayList<pheromone> pheromones = new ArrayList<pheromone>();
 	
 	//methode
 	public monde(int qte_obj_obst, int qte_fourm, int qte_obj_food, simulation simul) {
@@ -44,6 +45,17 @@ public class monde{
 	    	fourmiliere f = fourmilieres.get(i);
 	    	f.nextStep();
 	    }
+		
+		// Parcours toutes les phéromones
+		ArrayList<pheromone> pheromones = this.pheromones;
+		
+		for (int i=0; i<pheromones.size(); i++) {
+			pheromones.get(i).decrementePheromone();
+			
+			if (pheromones.get(i).isEmpty()) {
+				pheromones.remove(i);
+			}
+	    }
 	}
 	
 	//accesseur
@@ -57,6 +69,10 @@ public class monde{
 	
 	public ArrayList<fourmiliere> getFourmilieres() {
 		return this.fourmilieres;
+	}
+	
+	public ArrayList<pheromone> getPheromones() {
+		return this.pheromones;
 	}
 	
 	public void setObstacles(ArrayList<obstacle> obstacles) {

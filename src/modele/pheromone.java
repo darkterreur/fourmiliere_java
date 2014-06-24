@@ -3,17 +3,51 @@ package modele;
 public class pheromone {
 	//attribut
 	private int qte_phero;
-	private int phero_base;
+	private int phero_base = 50;
 	private int x;
 	private int y;
+	private int indexOfNextPheromone = -1;
+	private monde m;
 	
 	//methode
-	public pheromone(int phero_base, int X, int Y) {
+	public pheromone(int X, int Y, int indexOfNextPheromone, monde m) {
 		this.qte_phero = phero_base;
-		this.phero_base = phero_base;
 		this.x = X;
 		this.y = Y;
+		this.indexOfNextPheromone = indexOfNextPheromone;
+		this.m = m;
 	}
+	
+	public pheromone getPheromoneSuivante () {
+		try {
+			pheromone phero = this.m.getPheromones().get(this.indexOfNextPheromone);
+			return phero;
+		} catch (IndexOutOfBoundsException exception) {
+			return null;
+		}
+	}
+	
+	public boolean isEmpty() {
+		if (this.qte_phero <= 0) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean hasNextPheromone() {
+		if (this.indexOfNextPheromone >= 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public int getIndexOfNextPheromone() {
+		return this.indexOfNextPheromone;
+	}
+	
+	/*
 	@Override
 	public String toString() {
 		return "pheromone [qte_phero=" + qte_phero + ", phero_base=" + phero_base + ", x=" + x + ", y=" + y + "]";
@@ -24,13 +58,12 @@ public class pheromone {
 		int cumul = this.getQte_phero() + add;
 		this.setQte_phero(cumul);
 	}
+	*/
 	
 	//fonction qui enleve 1 de pheromone a chaque tour
 	public void decrementePheromone(){
 		this.setQte_phero(this.getQte_phero()-1);
 	}
-	
-	
 	
 	//accesseur
 	public int getQte_phero() {

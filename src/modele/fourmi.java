@@ -20,20 +20,20 @@ public class fourmi {
 	private int width = 10;
 	private int height = 10;
 	private int chargePortee = 0;
-	public boolean isRetourFourmiliere = false;
+	private boolean isRetourFourmiliere = false;
 	private boolean suitPheromone = false;
 	private boolean isSurNourriture = false;
-	public boolean deposePheromone = false;
+	private boolean deposePheromone = false;
 	private int indexNourritureMangee;
+	private int indexObstacleAContourner;
+	// Dernier phéromone déposé
+	private int indexLastPheromone = -1;
+	private boolean isContournementBas = false;
+	private boolean isContournementGauche = false;
+	private boolean isContournementHaut = false;
+	private boolean isContournementDroite = false;
 	
-	/*
-	private food monFood;
-	private int charge_max;
-	private int charge_porter;
-	// Plein est donc un booleen
-	//private boolean plein;*/
-	
-	//methode
+	// Constructeur
 	public fourmi(fourmiliere f) {
 		this.x = f.getX();
 		this.y = f.getY();
@@ -41,10 +41,27 @@ public class fourmi {
 	}
 	
 	
-	// Fait avancer la fourmie d'un pas
+	// Fait avancer la fourmi d'un pas
 	public void avance() {
+		int positionInitialeX = this.x;
+		int positionInitialeY = this.y;
+		
+		/*
+		if (this.isContournementBas || this.isContournementGauche || this.isContournementHaut || this.isContournementDroite) {
+			this.contourneObstacle();
+			this.isContournementBas = false;
+			this.isContournementGauche = false;
+			this.isContournementHaut = false;
+			this.isContournementDroite = false;
+			this.indexObstacleAContourner = -1;
+		} else
+		*/
+		
+		// Si la fourmi a l'état retour à la fourmilière
 		if (this.isRetourFourmiliere) {
 			// Avancer vers la fourmilière en ligne droite
+			this.deposePheromone();
+			
 			if (this.x > this.fourmiliereMere.getX()) {
 				this.x-=5;
 			} else if (this.x < this.fourmiliereMere.getX()) {
@@ -56,34 +73,81 @@ public class fourmi {
 			} else if (this.y < this.fourmiliereMere.getY()) {
 				this.y+=5;
 			}
-		} else if (false) {
+			
+			if (this.x == this.fourmiliereMere.getX() && this.y == this.fourmiliereMere.getY()) {
+				this.deposeNourriture();
+			}
 		// Sinon si la fourmi se trouve sur de la nourriture, c'est à dire que les x et y correspondent à l'emplacement d'une nourriture du monde
-			// La fourmi récupère de la nourriture
 		} else if (this.isSurNourriture()) {
+			// La fourmi récupère de la nourriture
 			this.getNourriture();
-		} else if (false) {
-		// Sinon si la fourmi repère de la nourriture, c'est à dire que de la nourriture se situe dans l'entourage proche de la fourmi
-			// Se déplacer vers la nourriture
 		// Sinon si la fourmi suit des phéromones
-			// Chercher une autre phéromone
-			// Se déplacer à l'emplacement de la phéromone trouvée
-		} else {
+		} else if (this.suitPheromone) {
+			// Cherche une autre phéromone et se déplace à l'emplacement de la phéromone trouvée
+			try {
+				pheromone phero = this.fourmiliereMere.getMonde().getPheromones().get(this.indexLastPheromone);
+				
+				if (phero != null) {
+					if (phero.hasNextPheromone()) {
+						pheromone pheromoneSuivante = phero.getPheromoneSuivante();
+						
+						if (pheromoneSuivante != null) {
+							this.x = phero.getPheromoneSuivante().getX();
+							this.y = phero.getPheromoneSuivante().getY();
+							this.indexLastPheromone = phero.getIndexOfNextPheromone();
+						} else {
+							this.suitPheromone = false;
+							Hashtable<String, Integer> positions = this.calculDeplacementAleatoire();
+							this.x = positions.get("x");
+							this.y = positions.get("y");
+						}
+					} else {
+						this.suitPheromone = false;
+						Hashtable<String, Integer> positions = this.calculDeplacementAleatoire();
+						this.x = positions.get("x");
+						this.y = positions.get("y");
+					}
+				} else {
+					this.suitPheromone = false;
+					Hashtable<String, Integer> positions = this.calculDeplacementAleatoire();
+					this.x = positions.get("x");
+					this.y = positions.get("y");
+				}
+			} catch (IndexOutOfBoundsException exception) {
+				this.suitPheromone = false;
+				Hashtable<String, Integer> positions = this.calculDeplacementAleatoire();
+				this.x = positions.get("x");
+				this.y = positions.get("y");
+			}
 		// Sinon
-			if (false) {
-			// Chercher une phéromone à proximité
-			// Si une phéromone est à proximité
-				// Se déplacer vers celle-ci
+		} else {
+			// Cherche une phéromone à proximité
+			if (this.hasPheromoneAProximite()) {
+				// Se déplace vers celle-ci
+				pheromone phero = this.fourmiliereMere.getMonde().getPheromones().get(this.indexLastPheromone);
+				this.x = phero.getX();
+				this.y = phero.getY();
+				this.suitPheromone = true;
 			} else {
 			// Sinon
-				// Se déplacer d'un pas dans une direction aléatoire
+				// Se déplace d'un pas dans une direction aléatoire
 				Hashtable<String, Integer> positions = this.calculDeplacementAleatoire();
 				this.x = positions.get("x");
 				this.y = positions.get("y");
 			}
 		}
 
-		// Si la direction définie est un obstacle, lancer le contournement de l'obstacle
-		// Sinon, se déplacer sur la case
+		// Tant que la direction définie est un obstacle, contourne l'obstacle
+		while (this.directionIsObstacle()) {
+			this.x = positionInitialeX;
+			this.y = positionInitialeY;
+			
+			Hashtable<String, Integer> positions = this.calculDeplacementAleatoire();
+			this.x = positions.get("x");
+			this.y = positions.get("y");
+		}
+		
+		// Puis se déplace à la position définie
 	}
 	
 	public Hashtable calculDeplacementAleatoire() {
@@ -136,15 +200,55 @@ public class fourmi {
 	public int getHeight() {
 		return this.height;
 	}
-
-	// Vérifie si des phéromones sont proches de la position de la fourmi
-	public void pheromoneAProximite(){
-
+	
+	// Dépose une quantité de phéromone à l'emplacement courant
+	public void deposePheromone() {
+		if (this.indexLastPheromone == -1) {
+			pheromone phero = new pheromone(this.x, this.y, this.indexLastPheromone, this.fourmiliereMere.getMonde());
+			
+			this.fourmiliereMere.getMonde().getPheromones().add(phero);
+			this.indexLastPheromone = this.fourmiliereMere.getMonde().getPheromones().lastIndexOf(phero);
+		} else {
+			pheromone phero = new pheromone(this.x, this.y, this.indexLastPheromone, this.fourmiliereMere.getMonde());
+			
+			this.fourmiliereMere.getMonde().getPheromones().add(phero);
+			this.indexLastPheromone = this.fourmiliereMere.getMonde().getPheromones().lastIndexOf(phero);
+		}
+		/*if (this.indexLastPheromone == -1) {
+			this.fourmiliereMere.getMonde().getPheromones().add(new pheromone(this.x, this.y, true, -1));
+		} else {
+			this.fourmiliereMere.getMonde().getPheromones().add(new pheromone(this.x, this.y, this.indexLastPheromone, this.fourmiliereMere.getMonde()));
+		}*/
 	}
-
+	
+	// Vérifie si des phéromones sont proches de la position de la fourmi
+	public boolean hasPheromoneAProximite(){
+		ArrayList<pheromone> pheromones = this.fourmiliereMere.getMonde().getPheromones();
+		
+		for (int k=0; k<pheromones.size(); k++) {
+			pheromone pheromoneCourant = pheromones.get(k);
+			
+			if (this.x-5 == pheromoneCourant.getX() && this.y+5 == pheromoneCourant.getY()
+				|| this.x == pheromoneCourant.getX() && this.y+5 == pheromoneCourant.getY()
+				|| this.x+5 == pheromoneCourant.getX() && this.y+5 == pheromoneCourant.getY()
+				|| this.x-5 == pheromoneCourant.getX() && this.y == pheromoneCourant.getY()
+				|| this.x+5 == pheromoneCourant.getX() && this.y == pheromoneCourant.getY()
+				|| this.x-5 == pheromoneCourant.getX() && this.y-5 == pheromoneCourant.getY()
+				|| this.x == pheromoneCourant.getX() && this.y-5 == pheromoneCourant.getY()
+				|| this.x+5 == pheromoneCourant.getX() && this.y-5 == pheromoneCourant.getY()
+			   )
+			{
+				this.indexLastPheromone = k;
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	// Cherche le prochain phéromone à suivre
 	public void searchNextPheromone(){
-
+		
 	}
 
 	// Vérifie si de la nourriture est proche de la position de la fourmi
@@ -154,16 +258,49 @@ public class fourmi {
 		for (int k=0; k<foods.size(); k++) {
 			food foodCourante = foods.get(k);
 			
-			if (foodCourante.getForme() == food.feuille && ((this.x >= foodCourante.x && this.x <= foodCourante.x+20) && (this.y >= foodCourante.y+10 && this.y <= foodCourante.y+60))) {
-				this.isSurNourriture = true;
-				this.indexNourritureMangee = k;
-				return true;
+			if (foodCourante.getForme() == food.feuille) {
+				if (foodCourante.testValeurFood() >= 50
+					&& ((this.x >= foodCourante.x && this.x <= foodCourante.x+20) && (this.y >= foodCourante.y+10 && this.y <= foodCourante.y+60)))
+				{
+					this.isSurNourriture = true;
+					this.indexNourritureMangee = k;
+					return true;
+				} else if ((foodCourante.testValeurFood() >= 25 && foodCourante.testValeurFood() <= 49)
+					&& ((this.x >= foodCourante.x && this.x <= foodCourante.x+20) && (this.y >= foodCourante.y+10 && this.y <= foodCourante.y+30)))
+				{
+					this.isSurNourriture = true;
+					this.indexNourritureMangee = k;
+					return true;
+				} else if ((foodCourante.testValeurFood() >= 1 && foodCourante.testValeurFood() <= 24)
+					&& ((this.x >= foodCourante.x+3 && this.x <= foodCourante.x+7) && (this.y >= foodCourante.y && this.y <= foodCourante.y+10)))
+				{
+					this.isSurNourriture = true;
+					this.indexNourritureMangee = k;
+					return true;
+				}
 			}
 		}
 		
 		return false;
 	}
-
+	
+	public boolean directionIsObstacle() {
+		ArrayList<obstacle> obstacles = this.fourmiliereMere.getMonde().getObstacles();
+		
+		for (int k=0; k<obstacles.size(); k++) {
+			obstacle obstacleCourant = obstacles.get(k);
+			
+			if (obstacleCourant.getForme() == obstacle.cailloux) {
+				if ((this.x >= obstacleCourant.x && this.x <= obstacleCourant.x+10) && (this.y >= obstacleCourant.y && this.y <= obstacleCourant.y+10)) {
+					this.indexObstacleAContourner = k;
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
+	
 	// Récupère la nourriture
 	public void getNourriture(){
 		// Récupère une quantité de nourriture
@@ -180,6 +317,9 @@ public class fourmi {
 		
 		// Retourne à la fourmilière
 		this.isRetourFourmiliere = true;
+		
+		// Ne suit plus de phéromones
+		this.suitPheromone = false;
 		
 		// Et dépose des phéromones en chemin
 		this.deposePheromone = true;
@@ -207,7 +347,47 @@ public class fourmi {
 
 	// Contourne un obstacle selon la stratégie d'évitement définie par l'utilisateur
 	public void contourneObstacle(){
-
+		obstacle obstacleAContourner = this.fourmiliereMere.getMonde().getObstacles().get(this.indexObstacleAContourner);
+		
+		/*if (this.isContournementHaut) {
+			this.x += 5;
+		} else if (this.isContournementBas) {
+			this.x -=5;
+		} else if (this.isContournementDroite) {
+			this.y -= 5;
+		} else if (this.isContournementGauche) {
+			this.y += 5;
+		} else {*
+			if (this.x < obstacleAContourner.x && this.y == obstacleAContourner.y) {
+				// Arrive de la gauche : contourne par le haut
+				this.isContournementHaut = true;
+				this.y += 5;
+			} else if (this.x > obstacleAContourner.x && this.y == obstacleAContourner.y) {
+				// Arrive de la droite : contourne par le bas
+				this.isContournementBas = true;
+				this.y -= 5;
+			} else if (this.x == obstacleAContourner.x && this.y > obstacleAContourner.y) {
+				// Arrive par le haut : contourne par la droite
+				this.isContournementDroite = true;
+				this.x += 5;
+			} else if (this.x == obstacleAContourner.x && this.y < obstacleAContourner.y) {
+				// Arrive par le bas : contourne par la gauche
+				this.isContournementGauche = true;
+				this.x -= 5;
+			} else if (this.x < obstacleAContourner.x && this.y > obstacleAContourner.y) {
+				// Arrive par en haut à gauche : contourne par la droite
+				this.x += 5;
+			} else if (this.x > obstacleAContourner.x && this.y > obstacleAContourner.y) {
+				// Arrive par en haut à droite : contourne par le bas
+				this.y -= 5;
+			} else if (this.x > obstacleAContourner.x && this.y < obstacleAContourner.y) {
+				// Arrive par en bas à droite : contourne par la gauche
+				this.x -= 5;
+			}  else if (this.x < obstacleAContourner.x && this.y < obstacleAContourner.y) {
+				// Arrive par en bas à gauche : contourne par le haut
+				this.y += 5;
+			}
+		//}*/
 	}	
 	
 	//fonction existe deja et on met a jour l'objet nourriture plus haut dans un controleur

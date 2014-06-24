@@ -14,6 +14,7 @@ import modele.fourmi;
 import modele.fourmiliere;
 import modele.monde;
 import modele.obstacle;
+import modele.pheromone;
 import modele.simulation;
 
 public class rendu extends JPanel {
@@ -108,6 +109,17 @@ public class rendu extends JPanel {
 					
 					g.fillOval(fourmiCourante.getX(), fourmiCourante.getY(), fourmiCourante.getWidth(), fourmiCourante.getHeight());
 				}
+		    }
+			
+			// Phéromones
+			ArrayList<pheromone> pheromones = m.getPheromones();
+			g.setColor(Color.DARK_GRAY);
+			
+		    for (int i=0; i<pheromones.size(); i++) {
+		    	pheromone pheromoneCourante = pheromones.get(i);
+		    	
+		    	g.fillRect(pheromoneCourante.getX(), pheromoneCourante.getY(), 1, 1);
+		    	
 		    }
 		//}
 	}
