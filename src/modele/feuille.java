@@ -6,7 +6,7 @@ public class feuille extends food {
 		this.width = 20;
 		this.height = 80;
 		
-		this.valeur_base_food = 20;
+		this.valeur_base_food = 200;
 		this.qte_rest_food = this.valeur_base_food;
 	}
 }

@@ -1,5 +1,8 @@
 package modele;
 
+/**
+ * Regroupe les paramétages possibles de la simulation
+ */
 public class Parametrage {
 	public static int TAILLE_DEFAUT = 500;
 	public static int NOMBRE_FOURMIS = 25;
@@ -8,11 +11,18 @@ public class Parametrage {
 	public static int VITESSE_EVAPO_PHERO = 25;
 	public static String EMPLACEMENT_SAUVEGARDE = "params_user.txt";
 	public static boolean OBSTACLES_ENTRE_FOURMILIERE_ET_NOURRITURE = false;
-	
 	private int taille, nombreFourmis, qteObstacles, qteFood, vitesseEvapoPhero;
 	private boolean obstacleEntreFourmiliereEtNourriture;
 
-	public Parametrage(){}
+	/**
+	 * Affecte l'ensemble des paramètres nécessaires
+	 * @param taille
+	 * @param nbreFourmis
+	 * @param qteObstacles
+	 * @param qteFood
+	 * @param vitesseEvapoPhero
+	 * @param obstacleEntreFourmiliereEtNourriture
+	 */
 	public Parametrage(int taille, int nbreFourmis, int qteObstacles, int qteFood, int vitesseEvapoPhero, boolean obstacleEntreFourmiliereEtNourriture){
 		this.taille = taille;
 		this.nombreFourmis = nbreFourmis;

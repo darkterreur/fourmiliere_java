@@ -12,15 +12,19 @@ import javax.swing.WindowConstants;
 
 import modele.simulation;
  
- 
+/**
+ * Représente la fenêtre principale contenant le rendu
+ */
 public class MonJFrame extends JFrame{
- 
-     /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private rendu rendu;
+	private rendu rendu;	// Le rendu de la simulation
 	
+	/**
+	 * Définie la taille et passe la simulation au rendu
+	 * @param largeur
+	 * @param hauteur
+	 * @param sim
+	 */
     public MonJFrame(int largeur, int hauteur, simulation sim){
     	super();	
     	this.rendu = new rendu(sim);
@@ -33,6 +37,10 @@ public class MonJFrame extends JFrame{
         this.setVisible(true);
     }
     
+    /**
+     * Redessine le rendu en lui readressant la simulation avancée d'un pas
+     * @param sim
+     */
     public void paint(simulation sim){
     	rendu.setSimulation(sim);
     	rendu.repaint();

@@ -3,8 +3,6 @@ package modele;
 import java.util.ArrayList;
 
 public class fourmiliere {
-	
-	//attribut
 	private int x;
 	private int y;
 	private monde monde;
@@ -15,26 +13,26 @@ public class fourmiliere {
 	private int qte_food_creat_fourmiliere;
 	private int width = 0;
 	private int height = 0;
-	private ArrayList<fourmi> fourmis = new ArrayList<fourmi>();
+	private ArrayList<fourmi> fourmis = new ArrayList<fourmi>();	// La liste des fourmis de cette fourmilière
 	
-	//methode
-	public fourmiliere(int X, int Y, monde m) {//int qte_food_recolter,int X, int Y,  int qte_fourmi, int max_fourmi,int qte_food_creat_fourmi,int qte_food_creat_fourmiliere, monde monde) {
-		/*this.qte_food_recolter = qte_food_recolter;
-		this.qte_fourmi = qte_fourmi;
-		this.max_fourmi = max_fourmi;
-		this.qte_food_creat_fourmi = qte_food_creat_fourmi;//500
-		this.qte_food_creat_fourmiliere = qte_food_creat_fourmiliere; //10000*/
+	/**
+	 * Définie l'emplacement de laf ourmilière et le monde auquel elle appartient
+	 * @param X
+	 * @param Y
+	 * @param m
+	 */
+	public fourmiliere(int X, int Y, monde m) {
 		this.monde = m;
 		this.x = X;
 		this.y = Y;
-		this.width = 70;
-		this.height = 70;
+		this.width = 30;
+		this.height = 30;
 	}
 	
-	
-	
+	/**
+	 * Parcours toutes les fourmis de la fourmilière et les fait avancer
+	 */
 	public void nextStep() {
-		// Parcours toutes les fourmis de la fourmiliere et les fait avancer
 		ArrayList<fourmi> fourmis = this.fourmis;
 		
 		for (int i=0; i<fourmis.size(); i++) {
@@ -43,14 +41,25 @@ public class fourmiliere {
 	    }
 	}
 	
+	/**
+	 * Ajoute une quantité de nourriture à la fourmilière
+	 * @param quantite
+	 */
 	public void addFood(int quantite) {
 		this.qte_food_recolter += quantite;
 	}
 	
+	/**
+	 * Ajoute une fourmi et la lie à cette fourmilière
+	 */
 	public void addFourmi() {
 		this.fourmis.add(new fourmi(this));
 	}
 	
+	/**
+	 * Retourne toutes les fourmis
+	 * @return
+	 */
 	public ArrayList<fourmi> getFourmis() {
 		return this.fourmis;
 	}
@@ -67,31 +76,6 @@ public class fourmiliere {
 		return this.height;
 	}
 	
-	@Override
-	public String toString() {
-		return "fourmiliere [qte_food_recolter=" + qte_food_recolter + ", qte_fourmi=" + qte_fourmi + 
-				", max_fourmi=" + max_fourmi + ", qte_food_creat_fourmi=" + qte_food_creat_fourmi +
-				", qte_food_creat_fourmiliere=" + qte_food_creat_fourmiliere +"]";
-	}
-
-	public void ajoutFoodStock(int quantite){
-		this.setQte_food_recolter(this.getQte_food_recolter()+quantite);
-	}
-	
-	public void retirerFoodStock(int qte){
-		this.setQte_food_recolter(this.getQte_food_recolter() - qte);
-	}
-	/*
-	public void ajoutFourmi(int charge_max, int X, int Y, fourmiliere fourmiliere, food theFood){
-		theCtrlFourmis.ajoutFourmi(charge_max,X, Y, this, theFood);
-	}*/
-	
-	/*
-	public void suppressionFourmi(fourmi theFourmi){
-		theCtrlFourmis.deleteFourmi(theFourmi);
-	}*/
-	
-	//accesseur
 	public int getQte_food_recolter() {
 		return qte_food_recolter;
 	}
