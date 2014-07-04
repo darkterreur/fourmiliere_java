@@ -1,36 +1,34 @@
 package modele;
 
+/**
+ * Un obstacle de l'environnement
+ *
+ */
 public class obstacle {
 	public static String cailloux = "cailloux";
 	public static String flac = "flac";
 	public static String branche = "branche";
 	
-	//attribut
-	private String forme;
 	protected int x = 0;
 	protected int y = 0;
-	protected int width = 0;
-	protected int height = 0;
+	protected int width = 1;
+	protected int height = 1;
 	
-	//methode
-	public obstacle(String forme, int x, int y) {
+	public obstacle(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.forme = forme;
-	}
-
-	@Override
-	public String toString() {
-		return "obstacle [forme=" + forme + "]";
 	}
 	
-	//accesseur
-	public String getForme() {
-		return forme;
+	@Override
+	public int hashCode() {	// Pour la méthode contains()
+		return this.x+this.y;
 	}
-
-	public void setForme(String forme) {
-		this.forme = forme;
+	
+	@Override
+	public boolean equals(Object o) {	// Pour la méthode contains()
+		obstacle other = (obstacle) o;
+		
+		return (this.x == other.x && this.y == other.y) ? true : false;
 	}
 	
 	public int getX() {
@@ -49,7 +47,19 @@ public class obstacle {
 		return this.height;
 	}
 	
-	
-	
-	
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
 }

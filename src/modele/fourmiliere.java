@@ -1,6 +1,7 @@
 package modele;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class fourmiliere {
 	private int x;
@@ -10,13 +11,14 @@ public class fourmiliere {
 	private int qte_fourmi = 0;
 	private int max_fourmi;
 	private int qte_food_creat_fourmi;
-	private int qte_food_creat_fourmiliere;
 	private int width = 0;
 	private int height = 0;
-	private ArrayList<fourmi> fourmis = new ArrayList<fourmi>();	// La liste des fourmis de cette fourmilière
+	private ArrayList<fourmi> fourmis = new ArrayList<fourmi>();					// La liste des fourmis de cette fourmilière
+	private HashMap<Contournement, Contournement> memoireCollectiveContournement
+			= new HashMap<Contournement, Contournement>();							// Mémoire de la fourmilière sur les chemins de contournement les plus courts
 	
 	/**
-	 * Définie l'emplacement de laf ourmilière et le monde auquel elle appartient
+	 * Définie l'emplacement de la fourmilière et le monde auquel elle appartient
 	 * @param X
 	 * @param Y
 	 * @param m
@@ -47,6 +49,8 @@ public class fourmiliere {
 	 */
 	public void addFood(int quantite) {
 		this.qte_food_recolter += quantite;
+		this.getMonde().getSimulation().getInfosModele().setQteNourritureFourmiliere(this.qte_food_recolter);
+		this.getMonde().getSimulation().getInfosModele().setQteNourritureEnvironement((food.valeurBaseFood * this.monde.getQte_obj_food())-this.qte_food_recolter);
 	}
 	
 	/**
@@ -100,12 +104,6 @@ public class fourmiliere {
 	public void setQte_food_creat_fourmi(int qte_food_creat_fourmi) {
 		this.qte_food_creat_fourmi = qte_food_creat_fourmi;
 	}
-	public int getQte_food_creat_fourmiliere() {
-		return qte_food_creat_fourmi;
-	}
-	public void setQte_food_creat_fourmiliere(int qte_food_creat_fourmiliere) {
-		this.qte_food_creat_fourmiliere = qte_food_creat_fourmiliere;
-	}
 	public int getX() {
 		return this.x;
 	}
@@ -117,5 +115,30 @@ public class fourmiliere {
 	}
 	public void setY(int Y) {
 		this.y = Y;
+	}
+
+	public HashMap<Contournement, Contournement> getMemoireCollectiveContournement() {
+		return memoireCollectiveContournement;
+	}
+
+	public void setMemoireCollectiveContournement(
+			HashMap<Contournement, Contournement> memoireCollectiveContournement) {
+		this.memoireCollectiveContournement = memoireCollectiveContournement;
+	}
+
+	public void setMonde(monde monde) {
+		this.monde = monde;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public void setFourmis(ArrayList<fourmi> fourmis) {
+		this.fourmis = fourmis;
 	}
 }

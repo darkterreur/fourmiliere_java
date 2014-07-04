@@ -3,12 +3,9 @@ package vue;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Polygon;
 import java.util.ArrayList;
-
-import javax.swing.JFrame;
 import javax.swing.JPanel;
-
+import javax.swing.JTextArea;
 import modele.food;
 import modele.fourmi;
 import modele.fourmiliere;
@@ -19,20 +16,24 @@ import modele.simulation;
 
 /**
  * Se charge du rendu graphique
- *
  */
 public class rendu extends JPanel {
 	private static final long serialVersionUID = 1L;
+	
 	private simulation sim;
+	private JTextArea jTextArea = new JTextArea();	// Sert pour donner les informations sur la simulation
 	
 	/**
-	 * Lie le rendu à la simulation qui contient les données essentielles
+	 * Lie le rendu à la simulation qui contient les données nécessaires à l'affichage des éléments
 	 * @param sim
 	 */
 	public rendu(simulation sim) {
 		super();
 		this.sim = sim;
+		
 		this.setPreferredSize(new Dimension(sim.getHauteur(), sim.getLargeur()));
+		
+		this.add(this.jTextArea);
 	}
 	
 	/**
@@ -52,19 +53,13 @@ public class rendu extends JPanel {
 	    }
 		
 		// Obstacles
-		ArrayList<obstacle> obstacles = m.getObstacles();
+		java.util.Iterator<obstacle> obstaclesIterator = m.getObstacles().iterator();
 		g.setColor(Color.BLUE);
 		
-	    for (int i=0; i<obstacles.size(); i++) {
-	    	obstacle obstacle = obstacles.get(i);
+	    while (obstaclesIterator.hasNext()) {
+	    	obstacle obstacle = obstaclesIterator.next();
 	    	
-	    	if (obstacle.getForme() == obstacle.cailloux) {
-	    		g.fillRect(obstacle.getX(), obstacle.getY(), obstacle.getWidth(), obstacle.getHeight());
-	    	} else if (obstacle.getForme() == obstacle.flac) {
-	    		g.fillOval(obstacle.getX(), obstacle.getY(), obstacle.getWidth(), obstacle.getHeight());
-	    	} else if (obstacle.getForme() == obstacle.branche) {
-	    		g.fillRect(obstacle.getX(), obstacle.getY(), obstacle.getWidth(), obstacle.getHeight());
-	    	}
+	    	g.fillRect(obstacle.getX(), obstacle.getY(), obstacle.getWidth(), obstacle.getHeight());
 	    }
 	    
 	    // Nourriture
@@ -106,19 +101,33 @@ public class rendu extends JPanel {
 				fourmiCourante.avance();
 				
 				g.fillOval(fourmiCourante.getX(), fourmiCourante.getY(), fourmiCourante.getWidth(), fourmiCourante.getHeight());
+				if (fourmiCourante.isRetourFourmiliere()) {
+					g.setColor(Color.WHITE);
+					g.fillOval(fourmiCourante.getX()+(fourmiCourante.getWidth()/2), fourmiCourante.getY()+(fourmiCourante.getHeight()/2), 2, 2);
+					g.setColor(Color.BLACK);
+				}
 			}
 	    }
 		
 		// Phéromones
-		ArrayList<pheromone> pheromones = m.getPheromones();
+		java.util.Iterator<pheromone> pheroIterator = m.getPheromones().iterator();
+		pheromone pheroCourante = null;
 		g.setColor(Color.DARK_GRAY);
 		
-	    for (int i=0; i<pheromones.size(); i++) {
-	    	pheromone pheromoneCourante = pheromones.get(i);
-	    	
-	    	g.fillRect(pheromoneCourante.getX(), pheromoneCourante.getY(), 1, 1);
-	    	
-	    }
+		while (pheroIterator.hasNext()) {
+			try {
+				pheroCourante = pheroIterator.next();
+				g.fillRect(pheroCourante.getX(), pheroCourante.getY(), 1, 1);
+			} catch (Exception e) {
+				break;
+			}
+		}
+		
+		// Cadre d'information sur l'avancé de la simulation
+		this.jTextArea.setText("Numéro du pas de la simulation : "+sim.getInfosModele().getNumeroPasSim()+"\r\n"+
+				   "Quantité de nourriture apportée à la fourmilière : "+sim.getInfosModele().getQteNourritureFourmiliere()+"\r\n"+
+				   "Quantité de nourriture restante dans l'environnement : "+sim.getInfosModele().getQteNourritureEnvironement()+"\r\n"+
+				   "Quantité totale de phéromones dans l'environnement : "+sim.getInfosModele().getQteTotalPheroDansEnv());
 	}
 	
 	public void setSimulation(simulation sim) {
