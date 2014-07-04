@@ -7,7 +7,7 @@ public class controleur {
 	int taille;
 	MonJFrame fenetre;
 	simulation sim;
-	final int SleepDuration = 75;
+	int SleepDuration = 75;
 	
 	/**
 	 * Initialisation
@@ -18,6 +18,7 @@ public class controleur {
 		this.taille = taille;
 		this.sim = sim;
 		fenetre = new MonJFrame(taille, taille, sim);
+		this.SleepDuration = sim.getParams().getVitesseJeu();
 	}
 	
 	/**

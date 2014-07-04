@@ -65,7 +65,6 @@ public class fourmi {
 			boolean incrementeOrdonnee = false;
 			boolean contournementGauche = this.contournementGauche;
 			boolean contournementDroit = this.contournementDroit;
-			int tentatives = 0;	// Tentatives de contournement
 			
 			// Avancer vers la fourmilière en ligne droite
 			this.deposePheromone();
@@ -111,16 +110,6 @@ public class fourmi {
 						contournementGauche = true;
 						contournementDroit = false;
 					}
-				} else if (tentatives >= 5) {
-					if (this.contournementGauche) {
-						contournementGauche = this.contournementGauche = false;
-						contournementDroit = this.contournementDroit = true;
-					} else {
-						contournementGauche = this.contournementGauche = true;
-						contournementDroit = this.contournementDroit = false;
-					}
-					
-					tentatives = 0;
 				}
 				
 				// Sert à définir la fin d'un contournement
@@ -185,7 +174,6 @@ public class fourmi {
 					// Mise à jour du nombre de déplacement dans le sens inverse des aiguilles d'une montre
 					this.contournementCourant.addNombreDeplacement(Contournement.contournementDroit, this.contournementCourant.getNombreDeplacementContournementDroit()+1);
 				}
-				tentatives++;
 			}
 			
 			// La fourmi est à la fourmilière
@@ -473,6 +461,9 @@ public class fourmi {
 		
 		// Retourne à la fourmilière
 		this.isRetourFourmiliere = true;
+		
+		this.fourmiliereMere.getMonde().getSimulation().getInfosModele().setQteNourritureEnvironement(
+				this.fourmiliereMere.getMonde().getSimulation().getInfosModele().getQteNourritureEnvironement()-1);
 	}
 
 	/**

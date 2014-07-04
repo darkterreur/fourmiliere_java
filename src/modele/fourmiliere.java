@@ -50,7 +50,6 @@ public class fourmiliere {
 	public void addFood(int quantite) {
 		this.qte_food_recolter += quantite;
 		this.getMonde().getSimulation().getInfosModele().setQteNourritureFourmiliere(this.qte_food_recolter);
-		this.getMonde().getSimulation().getInfosModele().setQteNourritureEnvironement((food.valeurBaseFood * this.monde.getQte_obj_food())-this.qte_food_recolter);
 	}
 	
 	/**

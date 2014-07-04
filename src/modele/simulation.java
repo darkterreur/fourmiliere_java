@@ -21,6 +21,7 @@ public class simulation {
 		this.largeur=params.getTaille();
 		this.x=0;
 		this.y=0;
+		this.params = params;
 	}
 	
 	/**

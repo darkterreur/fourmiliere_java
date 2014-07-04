@@ -1,4 +1,5 @@
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -28,30 +29,33 @@ public class run {
 		String qteNourritureText = "";
 		String vitesseEvapoText = "";
 		String isScenarioText = "";
-		String isScenario2Text = "";
-		String isScenario3Text = "";
+		String vitesseJeuText = "";
 		boolean isScenario = false;
-		boolean isScenario2 = false;
-		boolean isScenario3 = false;
 		Parametrage params = null;
 		JFrame parametrageSimulationFrame = new JFrame();
 		int option = 0;
 		
-		JTextField tailleField = new JTextField();
+		JComboBox<String> tailleCombo = new JComboBox<String>();
 		JTextField nombreFourmisField = new JTextField();
 		JTextField qteObstaclesField = new JTextField();
 		JTextField qteNourritureField = new JTextField();
 		JTextField vitesseEvapoField = new JTextField();
+		JComboBox<String> vitesseJeuCombo = new JComboBox<String>();
 		JCheckBox isScenarioBox = new JCheckBox();
-		JCheckBox isScenario2Box = new JCheckBox();
-		JCheckBox isScenario3Box = new JCheckBox();
 		
 		// Valeurs par défaut du paramétrage
-		tailleField.setText(String.valueOf(Parametrage.TAILLE_DEFAUT));
+		tailleCombo.addItem(Parametrage.TAILLE_PETITE_TEXTE);
+		tailleCombo.addItem(Parametrage.TAILLE_MOYENNE_TEXTE);
+		tailleCombo.addItem(Parametrage.TAILLE_GRANDE_TEXTE);
+		
 		nombreFourmisField.setText(String.valueOf(Parametrage.NOMBRE_FOURMIS));
 		qteObstaclesField.setText(String.valueOf(Parametrage.QTE_OBSTACLES));
 		qteNourritureField.setText(String.valueOf(Parametrage.QTE_NOURRITURE));
 		vitesseEvapoField.setText(String.valueOf(Parametrage.VITESSE_EVAPO_PHERO));
+
+		vitesseJeuCombo.addItem(Parametrage.VITESSE_JEU_LENTE_TEXTE);
+		vitesseJeuCombo.addItem(Parametrage.VITESSE_JEU_MOYENNE_TEXTE);
+		vitesseJeuCombo.addItem(Parametrage.VITESSE_JEU_RAPIDE_TEXTE);
 		
 		// Si une sauvegarde existe
 		String sauvegarde = Fichier.lire(Parametrage.EMPLACEMENT_SAUVEGARDE);
@@ -62,25 +66,20 @@ public class run {
 			if (response1 == JOptionPane.YES_OPTION) {
 				String[] split = sauvegarde.split(System.getProperty("line.separator"));
 				
-				if (split.length >= 8) {
-					tailleField.setText(split[0]);
+				if (split.length >= 6) {
+					tailleCombo.setSelectedItem(split[0]);
 					nombreFourmisField.setText(split[1]);
 					qteObstaclesField.setText(split[2]);
 					qteNourritureField.setText(split[3]);
 					vitesseEvapoField.setText(split[4]);
-					
-					if (split[5].equals("1")) {
-						isScenarioBox.setSelected(true);
-					}
+					vitesseJeuCombo.setSelectedItem(split[5]);
 					
 					if (split[6].equals("1")) {
-						isScenario2Box.setSelected(true);
-					}
-					
-					if (split[7].equals("1")) {
-						isScenario3Box.setSelected(true);
+						isScenarioBox.setSelected(true);
 					}
 				}
+			} else if (response1 == JOptionPane.CANCEL_OPTION) {
+				System.exit(0);
 			}
 		}
 		
@@ -90,45 +89,31 @@ public class run {
 		while (option != JOptionPane.CANCEL_OPTION && option != JOptionPane.CLOSED_OPTION &&
 				(tailleText.isEmpty() || nombreFourmisText.isEmpty() || qteObstaclesText.isEmpty() || qteNourritureText.isEmpty() || vitesseEvapoText.isEmpty())) {
 			Object[] message = {
-			    "Taille :", tailleField,
+			    "Taille :", tailleCombo,
 			    "Nombre de fourmis :", nombreFourmisField,
 			    "Quantité d'obstacles :", qteObstaclesField,
 			    "Quantité de nourriture :", qteNourritureField,
 			    "Vitesse d'évaporation des phéromones :", vitesseEvapoField,
-			    "Activer le scénario de contournement d'obstacles numéro 1 :", isScenarioBox,
-			    "Activer le scénario de contournement d'obstacles numéro 2 :", isScenario2Box,
-			    "Activer le scénario de contournement d'obstacles numéro 3 :", isScenario3Box
+			    "Vitesse de jeu :", vitesseJeuCombo,
+			    "Activer le scénario de contournement d'obstacles :", isScenarioBox
 			};
 			
 			option = JOptionPane.showConfirmDialog(parametrageSimulationFrame, message, "Entrez le paramétrage de la simulation :", JOptionPane.OK_CANCEL_OPTION);
 			
 			if (option == JOptionPane.OK_OPTION)
 			{
-			    tailleText = tailleField.getText();
+			    tailleText = (String) tailleCombo.getSelectedItem();
 			    nombreFourmisText = nombreFourmisField.getText();
 			    qteObstaclesText = qteObstaclesField.getText();
 			    qteNourritureText = qteNourritureField.getText();
 			    vitesseEvapoText = vitesseEvapoField.getText();
+			    vitesseJeuText = (String) vitesseJeuCombo.getSelectedItem();
 			    
 			    if (isScenarioBox.isSelected()) {
 			    	isScenario = true;
 			    	isScenarioText = "1";
 			    } else {
 			    	isScenarioText = "0";
-			    }
-			    
-			    if (isScenario2Box.isSelected()) {
-			    	isScenario2 = true;
-			    	isScenario2Text = "1";
-			    } else {
-			    	isScenario2Text = "0";
-			    }
-			    
-			    if (isScenario3Box.isSelected()) {
-			    	isScenario3 = true;
-			    	isScenario3Text = "1";
-			    } else {
-			    	isScenario3Text = "0";
 			    }
 			}
 		}
@@ -144,15 +129,14 @@ public class run {
 								+qteObstaclesText+System.getProperty("line.separator" )
 								+qteNourritureText+System.getProperty("line.separator" )
 								+vitesseEvapoText+System.getProperty("line.separator" )
-								+isScenarioText+System.getProperty("line.separator" )
-								+isScenario2Text+System.getProperty("line.separator" )
-								+isScenario3Text
+								+vitesseJeuText+System.getProperty("line.separator" )
+								+isScenarioText
 							);
 			}
 			
 			// Création de l'environnement en fonction du paramétrage
-			params = new Parametrage(Integer.valueOf(tailleText), Integer.valueOf(nombreFourmisText), Integer.valueOf(qteObstaclesText),
-					Integer.valueOf(qteNourritureText), Integer.valueOf(vitesseEvapoText), isScenario, isScenario2, isScenario3);
+			params = new Parametrage(tailleText, Integer.valueOf(nombreFourmisText), Integer.valueOf(qteObstaclesText),
+					Integer.valueOf(qteNourritureText), Integer.valueOf(vitesseEvapoText), vitesseJeuText, isScenario);
 			
 			simulation sim = new simulation(params);
 			monde monde1 = new monde(params, sim);
@@ -162,6 +146,8 @@ public class run {
 			// Lancement de la simulation
 			controleur c = new controleur(sim, params.getTaille());
 			c.run(sim);
+		} else {
+			System.exit(0);
 		}
 	}
 	

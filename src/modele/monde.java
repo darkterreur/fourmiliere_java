@@ -27,16 +27,13 @@ public class monde{
 	 * @param simul
 	 */
 	public monde(Parametrage params, simulation simul) {
-		this.qte_obj_obst = params.getQteObstacles();
 		this.qte_fourm = params.getNombreFourmis();
-		this.qte_obj_food = params.getQteFood();
 		monde.vitesseEvaporationPhero = params.getVitesseEvapoPhero();
 		this.sim = simul;
 		
 		Random rand = new Random();
 		int k=0,x=0,y=0;
 		
-		this.getSimulation().getInfosModele().setQteNourritureEnvironement(food.valeurBaseFood * this.getQte_obj_food());
 		this.getSimulation().getInfosModele().setQteTotalPheroDansEnv(this.pheromones.size());
 		fourmiliere f = null;
 		
@@ -97,6 +94,9 @@ public class monde{
 				this.addCailloux(i, 290);
 			}
 			this.addFeuille(230, 280);
+			
+			this.qte_obj_food = 1;
+			this.getSimulation().getInfosModele().setQteNourritureEnvironement(food.valeurBaseFood * this.getQte_obj_food());
 		}/*************** FIN (SCENARIO 1) *****************/
 		else if (params.isScenario2()) {
 /*************** SCENARIO 2 *********************/
@@ -142,6 +142,11 @@ public class monde{
 			this.addFeuille(340, 300);
 /*************** FIN (SCENARIO 3) *****************/
 		} else {
+			this.qte_obj_obst = params.getQteObstacles();
+			this.qte_obj_food = params.getQteFood();
+			
+			this.getSimulation().getInfosModele().setQteNourritureEnvironement(food.valeurBaseFood * this.getQte_obj_food());
+			
 			// Fourmilière
 			f = new fourmiliere(200, 220, this);
 			
