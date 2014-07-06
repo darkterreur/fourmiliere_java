@@ -148,7 +148,13 @@ public class monde{
 			this.getSimulation().getInfosModele().setQteNourritureEnvironement(food.valeurBaseFood * this.getQte_obj_food());
 			
 			// Fourmilière
-			f = new fourmiliere(200, 220, this);
+			if (params.getTaille() == Parametrage.TAILLE_GRANDE) {
+				f = new fourmiliere(300, 320, this);
+			} else if (params.getTaille() == Parametrage.TAILLE_MOYENNE) {
+				f = new fourmiliere(200, 220, this);
+			} else {
+				f = new fourmiliere(100, 120, this);
+			}
 			
 			for (k=0; k<this.qte_obj_obst; k++) {
 				x = rand.nextInt(this.sim.largeur);

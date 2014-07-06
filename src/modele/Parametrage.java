@@ -14,7 +14,7 @@ public class Parametrage {
 	public static String TAILLE_MOYENNE_TEXTE = "Moyenne";
 	public static int TAILLE_MOYENNE = 500;
 	public static String TAILLE_GRANDE_TEXTE = "Grande";
-	public static int TAILLE_GRANDE = 1000;
+	public static int TAILLE_GRANDE = 800;
 	
 	public static int NOMBRE_FOURMIS = 100;
 	public static int QTE_OBSTACLES = 50;

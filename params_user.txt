@@ -1,7 +1,7 @@
-Moyenne
-130
+Petite
+500
 50
-3
+0
 1000
 Rapide
-1
+0
