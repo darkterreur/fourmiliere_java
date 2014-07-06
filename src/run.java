@@ -48,14 +48,17 @@ public class run {
 		tailleCombo.addItem(Parametrage.TAILLE_MOYENNE_TEXTE);
 		tailleCombo.addItem(Parametrage.TAILLE_GRANDE_TEXTE);
 		
+		vitesseJeuCombo.addItem(Parametrage.VITESSE_JEU_LENTE_TEXTE);
+		vitesseJeuCombo.addItem(Parametrage.VITESSE_JEU_MOYENNE_TEXTE);
+		vitesseJeuCombo.addItem(Parametrage.VITESSE_JEU_RAPIDE_TEXTE);
+		
+		tailleCombo.setSelectedItem(Parametrage.TAILLE_MOYENNE_TEXTE);
 		nombreFourmisField.setText(String.valueOf(Parametrage.NOMBRE_FOURMIS));
 		qteObstaclesField.setText(String.valueOf(Parametrage.QTE_OBSTACLES));
 		qteNourritureField.setText(String.valueOf(Parametrage.QTE_NOURRITURE));
 		vitesseEvapoField.setText(String.valueOf(Parametrage.VITESSE_EVAPO_PHERO));
-
-		vitesseJeuCombo.addItem(Parametrage.VITESSE_JEU_LENTE_TEXTE);
-		vitesseJeuCombo.addItem(Parametrage.VITESSE_JEU_MOYENNE_TEXTE);
-		vitesseJeuCombo.addItem(Parametrage.VITESSE_JEU_RAPIDE_TEXTE);
+		vitesseJeuCombo.setSelectedItem(Parametrage.VITESSE_JEU_MOYENNE_TEXTE);
+		
 		
 		// Si une sauvegarde existe
 		String sauvegarde = Fichier.lire(Parametrage.EMPLACEMENT_SAUVEGARDE);

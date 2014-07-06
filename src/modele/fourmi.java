@@ -32,8 +32,8 @@ public class fourmi {
 	 * @param f
 	 */
 	public fourmi(fourmiliere f) {
-		this.x = f.getX();
-		this.y = f.getY();
+		this.x = f.getxCentre();
+		this.y = f.getyCentre();
 		this.fourmiliereMere = f;
 		this.deplacementCourant = new Deplacement(this.x, this.y, fourmi.nombrePixelDeplacement);	// Point de départ
 		
@@ -69,18 +69,18 @@ public class fourmi {
 			// Avancer vers la fourmilière en ligne droite
 			this.deposePheromone();
 			
-			if (this.x > this.fourmiliereMere.getX()) {
+			if (this.x > this.fourmiliereMere.getxCentre()) {
 				this.x-=fourmi.nombrePixelDeplacement;
 				decrementeAbscisse = true;
-			} else if (this.x < this.fourmiliereMere.getX()) {
+			} else if (this.x < this.fourmiliereMere.getxCentre()) {
 				this.x+=fourmi.nombrePixelDeplacement;
 				incrementeAbscisse = true;
 			}
 			
-			if (this.y > this.fourmiliereMere.getY()) {
+			if (this.y > this.fourmiliereMere.getyCentre()) {
 				this.y-=fourmi.nombrePixelDeplacement;
 				decrementeOrdonnee = true;
-			} else if (this.y < this.fourmiliereMere.getY()) {
+			} else if (this.y < this.fourmiliereMere.getyCentre()) {
 				this.y+=fourmi.nombrePixelDeplacement;
 				incrementeOrdonnee = true;
 			}
@@ -177,7 +177,7 @@ public class fourmi {
 			}
 			
 			// La fourmi est à la fourmilière
-			if (this.x == this.fourmiliereMere.getX() && this.y == this.fourmiliereMere.getY()) {
+			if (this.x == this.fourmiliereMere.getxCentre() && this.y == this.fourmiliereMere.getyCentre()) {
 				// Dépôt de nourriture
 				this.deposeNourriture();
 			}
@@ -340,8 +340,8 @@ public class fourmi {
 		if (pheromones.size() > 0) {
 			int pourcentageChanceAutreDirection = rand.nextInt(10);
 
-			// 10% de chance de changer de direction
-			if (pourcentageChanceAutreDirection == 0) {
+			// 10% de chance de changer de direction si il y a plus de deux chemins
+			if (pheromones.size() > 2 && pourcentageChanceAutreDirection == 0) {
 				int indexAleatoire = rand.nextInt(pheromones.size());
 				this.lastPheromone = pheromones.get(indexAleatoire);
 			} else {
@@ -368,7 +368,7 @@ public class fourmi {
 					this.lastPheromone = new pheromone(this.x+fourmi.nombrePixelDeplacement, this.y+fourmi.nombrePixelDeplacement);
 				} else if (this.ancienneDirectionPheromone == Deplacement.SOUTH_WEST
 						&& this.fourmiliereMere.getMonde().getPheromones().contains(new pheromone(this.x-fourmi.nombrePixelDeplacement, this.y+fourmi.nombrePixelDeplacement))) {
-					new pheromone(this.x-fourmi.nombrePixelDeplacement, this.y+fourmi.nombrePixelDeplacement);
+					this.lastPheromone = new pheromone(this.x-fourmi.nombrePixelDeplacement, this.y+fourmi.nombrePixelDeplacement);
 				} else {
 					int indexAleatoire = rand.nextInt(pheromones.size());
 					this.lastPheromone = pheromones.get(indexAleatoire);

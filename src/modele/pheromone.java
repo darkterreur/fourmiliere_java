@@ -26,6 +26,14 @@ public class pheromone {
 		return false;
 	}
 	
+	/**
+	 * Test le pourcentage de phéromones restante pour savoir quelle apparence elle aura
+	 * @return int Le pourcentage utilisé de la nourriture
+	 */
+	public int pourcentageRestant() {
+		return ((this.qte_phero * 100) / monde.vitesseEvaporationPhero);
+	}
+	
 	@Override
 	public int hashCode()
     {

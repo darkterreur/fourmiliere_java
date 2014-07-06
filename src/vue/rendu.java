@@ -112,11 +112,19 @@ public class rendu extends JPanel {
 		// Phéromones
 		java.util.Iterator<pheromone> pheroIterator = m.getPheromones().iterator();
 		pheromone pheroCourante = null;
-		g.setColor(Color.DARK_GRAY);
 		
 		while (pheroIterator.hasNext()) {
 			try {
 				pheroCourante = pheroIterator.next();
+				
+				if (pheroCourante.pourcentageRestant() >= 50) {
+					g.setColor(Color.DARK_GRAY);
+				} else if (pheroCourante.pourcentageRestant() >= 25 && pheroCourante.pourcentageRestant() <= 49) {
+					g.setColor(Color.GRAY);
+				} else if (pheroCourante.pourcentageRestant() >= 1 && pheroCourante.pourcentageRestant() <= 24) {
+					g.setColor(Color.LIGHT_GRAY);
+				}
+				
 				g.fillRect(pheroCourante.getX(), pheroCourante.getY(), 1, 1);
 			} catch (Exception e) {
 				break;

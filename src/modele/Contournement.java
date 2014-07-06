@@ -77,7 +77,7 @@ public class Contournement {
 	 * Vérifie quel côté a été testé
 	 */
 	public void setIsTested() {
-		if (this.nombreDeplacementContournementGauche > 0) {
+		if (this.nombreDeplacementContournementDroit > 0) {
 			this.droiteIsTested = true;
 		}
 		

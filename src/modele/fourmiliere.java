@@ -6,6 +6,8 @@ import java.util.HashMap;
 public class fourmiliere {
 	private int x;
 	private int y;
+	private int xCentre;
+	private int yCentre;
 	private monde monde;
 	private int qte_food_recolter = 0;
 	private int qte_fourmi = 0;
@@ -29,6 +31,8 @@ public class fourmiliere {
 		this.y = Y;
 		this.width = 30;
 		this.height = 30;
+		this.xCentre = X+(this.width/2);
+		this.yCentre = Y+(this.height/2);
 	}
 	
 	/**
@@ -139,5 +143,21 @@ public class fourmiliere {
 
 	public void setFourmis(ArrayList<fourmi> fourmis) {
 		this.fourmis = fourmis;
+	}
+
+	public int getxCentre() {
+		return xCentre;
+	}
+
+	public void setxCentre(int xCentre) {
+		this.xCentre = xCentre;
+	}
+
+	public int getyCentre() {
+		return yCentre;
+	}
+
+	public void setyCentre(int yCentre) {
+		this.yCentre = yCentre;
 	}
 }
