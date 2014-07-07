@@ -5,7 +5,7 @@ package modele;
  */
 public class food {
 	public static String feuille = "feuille";
-	public static int valeurBaseFood = 25;
+	public static int valeurBaseFood = 100;
 	
 	protected int qte_rest_food;
 	protected int x;

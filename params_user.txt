@@ -1,7 +1,7 @@
-Petite
-500
+Moyenne
+100
 50
-0
-1000
-Rapide
+3
+100
+Moyenne
 0
